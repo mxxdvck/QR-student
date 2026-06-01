@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Детали класса</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container": "#eceef0",
+                        "on-surface": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "surface": "#f7f9fb",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-surface": "#2d3133",
+                        "on-surface-variant": "#444653",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d8dadc",
+                        "primary-container": "#1e40af",
+                        "primary": "#00288e",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "outline-variant": "#c4c5d5",
+                        "on-primary-container": "#a8b8ff",
+                        "tertiary": "#2d3449",
+                        "on-primary-fixed": "#001453",
+                        "on-tertiary-container": "#b4bbd5",
+                        "surface-tint": "#3755c3",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "outline": "#757684",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-secondary-container": "#54647a",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-container": "#434b60",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-fixed-variant": "#173bab",
+                        "on-background": "#191c1e",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-tertiary-fixed": "#131b2e",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "secondary": "#505f76",
+                        "inverse-primary": "#b8c4ff",
+                        "background": "#f7f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "margin-desktop": "40px",
+                        "base": "4px",
+                        "md": "16px",
+                        "max-width": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "code-qr": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-qr": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low border-r border-outline-variant h-screen w-64 hidden md:flex flex-col py-lg px-md space-y-base z-20">
+<div class="mb-xl px-sm">
+<h2 class="font-headline-md text-headline-md text-primary">Панель управления</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">Администратор</p>
+</div>
+<nav class="flex-1 space-y-xs">
+<a class="flex items-center space-x-md px-sm py-sm bg-secondary-container text-on-secondary-container rounded-xl cursor-pointer duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">class</span>
+<span class="font-label-sm text-label-sm font-bold">Занятия</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm text-on-surface-variant hover:bg-surface-variant rounded-xl cursor-pointer duration-150 ease-in-out transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm">Студенты</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm text-on-surface-variant hover:bg-surface-variant rounded-xl cursor-pointer duration-150 ease-in-out transition-all" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-sm text-label-sm">Посещаемость</span>
+</a>
+</nav>
+<div class="pt-md border-t border-outline-variant space-y-xs">
+<a class="flex items-center space-x-md px-sm py-sm text-on-surface-variant hover:bg-surface-variant rounded-xl cursor-pointer duration-150 ease-in-out transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Настройки</span>
+</a>
+<a class="flex items-center space-x-md px-sm py-sm text-on-surface-variant hover:bg-surface-variant rounded-xl cursor-pointer duration-150 ease-in-out transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm text-label-sm">Выход</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<div class="flex-1 flex flex-col h-full min-w-0">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 border-b border-outline-variant flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 z-10">
+<div class="flex items-center space-x-sm">
+<button class="md:hidden p-sm text-on-surface-variant rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-headline-md font-headline-md text-primary md:hidden">Система Посещаемости</h1>
+</div>
+<div class="flex items-center space-x-md">
+<button class="p-sm text-on-surface-variant rounded-full hover:bg-surface-container-low transition-colors cursor-pointer duration-200 active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-label-sm">
+                    А
+                </div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto bg-background p-margin-mobile md:p-margin-desktop">
+<div class="max-w-[1280px] mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:justify-between md:items-end mb-xl gap-sm">
+<div>
+<div class="flex items-center space-x-sm text-on-surface-variant mb-xs cursor-pointer hover:text-primary transition-colors w-fit">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="font-label-sm text-label-sm">К списку занятий</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Детали класса: Информатика 101</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Осенний семестр 2024 • Преподаватель: Иванов И.И.</p>
+</div>
+<button class="bg-primary-container text-on-primary font-label-sm text-label-sm px-lg py-sm rounded-lg flex items-center justify-center space-x-sm hover:opacity-90 transition-opacity whitespace-nowrap h-[40px]">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>Добавить студента</span>
+</button>
+</div>
+<!-- Students Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider w-32">ID Студента</th>
+<th class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">ФИО</th>
+<th class="py-sm px-lg font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider w-24 text-right">Действия</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface transition-colors min-h-[48px] group">
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface-variant">2024-001</td>
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface">Алексеев Алексей Алексеевич</td>
+<td class="py-sm px-lg text-right">
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors min-h-[48px] group">
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface-variant">2024-002</td>
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface">Борисова Мария Николаевна</td>
+<td class="py-sm px-lg text-right">
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors min-h-[48px] group">
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface-variant">2024-003</td>
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface">Васильев Иван Сергеевич</td>
+<td class="py-sm px-lg text-right">
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors min-h-[48px] group">
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface-variant">2024-004</td>
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface">Григорьева Анна Петровна</td>
+<td class="py-sm px-lg text-right">
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors min-h-[48px] group">
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface-variant">2024-005</td>
+<td class="py-sm px-lg font-body-md text-body-md text-on-surface">Дмитриев Сергей Павлович</td>
+<td class="py-sm px-lg text-right">
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="mt-md flex justify-between items-center text-on-surface-variant px-sm">
+<span class="font-label-sm text-label-sm">Всего студентов: 5</span>
+</div>
+</div>
+</main>
+</div>
+</body></html>

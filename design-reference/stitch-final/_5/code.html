@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Система Посещаемости - Занятия</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container": "#eceef0",
+                        "on-surface": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "surface": "#f7f9fb",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-surface": "#2d3133",
+                        "on-surface-variant": "#444653",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d8dadc",
+                        "primary-container": "#1e40af",
+                        "primary": "#00288e",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "outline-variant": "#c4c5d5",
+                        "on-primary-container": "#a8b8ff",
+                        "tertiary": "#2d3449",
+                        "on-primary-fixed": "#001453",
+                        "on-tertiary-container": "#b4bbd5",
+                        "surface-tint": "#3755c3",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "outline": "#757684",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-secondary-container": "#54647a",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-container": "#434b60",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-fixed-variant": "#173bab",
+                        "on-background": "#191c1e",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-tertiary-fixed": "#131b2e",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "secondary": "#505f76",
+                        "inverse-primary": "#b8c4ff",
+                        "background": "#f7f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "margin-desktop": "40px",
+                        "base": "4px",
+                        "md": "16px",
+                        "max-width": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "code-qr": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-qr": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex flex-col md:flex-row min-h-screen">
+<!-- SideNavBar (Desktop) -->
+<nav class="bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline flat no shadows h-screen w-64 hidden md:flex flex-col flex flex-col py-lg px-md space-y-base">
+<div class="mb-lg">
+<h1 class="font-headline-md text-headline-md text-primary">Панель управления</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Администратор</p>
+</div>
+<div class="flex-1 space-y-sm">
+<div class="flex items-center space-x-md px-md py-sm bg-secondary-container dark:bg-primary-container text-on-secondary-container dark:text-on-primary-container rounded-xl cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">class</span>
+<span class="font-label-sm text-label-sm">Занятия</span>
+</div>
+<div class="flex items-center space-x-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-tertiary-container transition-all cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm">Студенты</span>
+</div>
+<div class="flex items-center space-x-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-tertiary-container transition-all cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-sm text-label-sm">Посещаемость</span>
+</div>
+</div>
+<div class="mt-auto space-y-sm pt-md border-t border-outline-variant">
+<div class="flex items-center space-x-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-tertiary-container transition-all cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Настройки</span>
+</div>
+<div class="flex items-center space-x-md px-md py-sm text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-tertiary-container transition-all cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm text-label-sm">Выход</span>
+</div>
+</div>
+</nav>
+<div class="flex-1 flex flex-col">
+<!-- TopNavBar (Mobile / Web) -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline flat no shadows docked full-width top-0 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 md:hidden">
+<div class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Система Посещаемости</div>
+<div class="flex items-center space-x-md text-primary dark:text-primary-fixed cursor-pointer transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors rounded-full p-xs">notifications</span>
+<img alt="Аватар пользователя" class="w-8 h-8 rounded-full" data-alt="A small, professional avatar placeholder image. It features a solid dark blue background with white sans-serif text indicating the initials 'AD'. The image is circular and minimalist, fitting a modern, flat-design academic dashboard interface. No extraneous details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZzU64zT1sckuZHAIKrpgkh4sw4i90i7K4zk4J6afliMcYX3UVFf7XIztT-wDa8ia70FNM1pVfI-AVqPy2PZXTk0EcMOc8sxO4IRnsUYBsM6j-y-DEwYWv-_R-As4sgYbAQ6Q6Wa0vAjMffDa5kVniToA80yROxBmCeQRcTguax0XPCJE_Ih5SKvan8A0uZOlIwzGHmtCSd_p4z3eIXC1_-Db8KSsXlvwn297MiErytgocXVlX4Fsjr67urYTJo6iXnIPGS0gNeXY"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto">
+<div class="max-w-max-width mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-xl gap-md">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Занятия</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Управление расписанием и отчетами</p>
+</div>
+<button class="bg-primary-container text-on-primary font-label-sm text-label-sm py-sm px-md rounded-lg hover:opacity-90 transition-opacity flex items-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+                        Создать занятие
+                    </button>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Upcoming Lessons Table (Span 2 cols on lg) -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex flex-col h-full">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md">Предстоящие</h3>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-surface-variant">
+<th class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Дата</th>
+<th class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Время</th>
+<th class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Предмет</th>
+<th class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Аудитория</th>
+<th class="py-sm px-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Действия</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-surface-variant hover:bg-surface-bright transition-colors h-12">
+<td class="py-sm px-md font-body-md text-body-md">Сегодня</td>
+<td class="py-sm px-md font-body-md text-body-md">10:00 - 11:30</td>
+<td class="py-sm px-md font-body-md text-body-md font-medium">Высшая математика</td>
+<td class="py-sm px-md font-body-md text-body-md text-on-surface-variant">Ауд. 302</td>
+<td class="py-sm px-md">
+<button class="text-primary font-label-sm text-label-sm hover:underline">Начать</button>
+</td>
+</tr>
+<tr class="border-b border-surface-variant hover:bg-surface-bright transition-colors h-12">
+<td class="py-sm px-md font-body-md text-body-md">Сегодня</td>
+<td class="py-sm px-md font-body-md text-body-md">12:00 - 13:30</td>
+<td class="py-sm px-md font-body-md text-body-md font-medium">Физика</td>
+<td class="py-sm px-md font-body-md text-body-md text-on-surface-variant">Лекц. 1</td>
+<td class="py-sm px-md">
+<button class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary transition-colors">Изменить</button>
+</td>
+</tr>
+<tr class="border-b border-surface-variant hover:bg-surface-bright transition-colors h-12">
+<td class="py-sm px-md font-body-md text-body-md">Завтра</td>
+<td class="py-sm px-md font-body-md text-body-md">08:30 - 10:00</td>
+<td class="py-sm px-md font-body-md text-body-md font-medium">Информатика</td>
+<td class="py-sm px-md font-body-md text-body-md text-on-surface-variant">Комп. класс 4</td>
+<td class="py-sm px-md">
+<button class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary transition-colors">Изменить</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Past Lessons Summary (Span 1 col on lg) -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex flex-col h-full">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md">Прошедшие</h3>
+<div class="space-y-sm flex-1">
+<!-- Past Item 1 -->
+<div class="p-md bg-surface border border-surface-variant rounded-lg flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-medium">Философия</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">Вчера</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant">14:00 - 15:30</div>
+<div class="mt-sm pt-sm border-t border-surface-variant flex justify-between items-center">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-outline" style="font-size: 16px;">groups</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">28/30</span>
+</div>
+<a class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-xs" href="#">
+                                        Отчет
+                                        <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Past Item 2 -->
+<div class="p-md bg-surface border border-surface-variant rounded-lg flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-medium">Высшая математика</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">21 Окт</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant">10:00 - 11:30</div>
+<div class="mt-sm pt-sm border-t border-surface-variant flex justify-between items-center">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-outline" style="font-size: 16px;">groups</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">25/30</span>
+</div>
+<a class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-xs" href="#">
+                                        Отчет
+                                        <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<button class="w-full mt-md py-sm text-center text-on-surface-variant font-label-sm text-label-sm border border-surface-variant rounded-lg hover:bg-surface-container-low transition-colors">
+                            Показать все
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-lg fixed bottom-0 w-full md:hidden rounded-t-xl z-50 flex justify-around items-center px-4 py-2">
+<div class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 transition-transform duration-200 active:scale-90 active:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">class</span>
+<span class="font-label-sm text-label-sm mt-xs">Занятия</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant transition-transform duration-200 active:scale-90 active:bg-surface-container-high cursor-pointer px-4 py-1">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-label-sm text-label-sm mt-xs">QR-код</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant transition-transform duration-200 active:scale-90 active:bg-surface-container-high cursor-pointer px-4 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-xs">Профиль</span>
+</div>
+</nav>
+</body></html>

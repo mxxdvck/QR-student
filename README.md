@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QR Student Attendance
+
+Compact web system for student attendance by QR code.
+
+The MVP target is simple: an admin creates classes, students, and lessons, shows a lesson QR code, and students mark attendance from their phones during the allowed time window.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the local demo server:
 
-```bash
+```sh
+npm install
+npm run demo:db
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Local demo owner:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Login: `admin`
+- Password: `admin123`
 
-## Learn More
+## Checks
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npm run lint
+npm test
+npm run build
+npm run smoke:mvp
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Production uses Drizzle with external PostgreSQL through `DATABASE_URL`.
 
-## Deploy on Vercel
+```sh
+npm run production:check
+npm run db:push
+npm run db:seed
+npm run production:db-check
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`db:push` applies the schema. `db:seed` creates one owner user. Configure
+credentials through `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`; the seed
+script does not hardcode a production password.
+`production:db-check` verifies the production tables and seeded owner.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For Vercel production setup, see `DEPLOYMENT.md`.
+
+## Documents
+
+- `PRD.md`: product scope and success criteria.
+- `PROJECT_MEMORY.md`: current decisions and constraints.
+- `ROADMAP.md`: planned phases.
+- `DELIVERY_PLAN.md`: next delivery slices.
+- `.env.example`: required environment variables.
+
+## Current Status
+
+The MVP is implemented: auth, classes, students, lessons, QR check-in,
+attendance table, student cabinet, and deployment preparation are in place.
