@@ -286,12 +286,20 @@ export default async function ClassDetailPage({
         )}
       </section>
 
-      <section className="space-y-3">
+      <section className="min-w-0 space-y-3">
         <div>
           <h2 className="text-lg font-semibold text-zinc-950">Посещаемость</h2>
           <p className="text-sm text-zinc-600">
             Строки - студенты. Столбцы - занятия по датам.
           </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs text-zinc-600" aria-label="Расшифровка статусов посещаемости">
+          <AttendanceStatusBadge status="present" />
+          <span className="self-center">присутствовал</span>
+          <AttendanceStatusBadge status="absent" />
+          <span className="self-center">не был на занятии</span>
+          <AttendanceStatusBadge status="pending" />
+          <span className="self-center">занятие ещё не завершилось</span>
         </div>
 
         {attendanceMatrix.students.length === 0 || attendanceMatrix.lessons.length === 0 ? (
@@ -301,17 +309,17 @@ export default async function ClassDetailPage({
             description="Добавьте хотя бы одного студента и одно занятие, чтобы увидеть таблицу."
           />
         ) : (
-          <TableWrapper>
-            <table className="min-w-full divide-y divide-zinc-200 text-sm">
+          <div className="max-h-[70dvh] overflow-auto rounded-lg border border-slate-200 bg-white shadow-none">
+            <table className="min-w-max divide-y divide-zinc-200 text-sm" aria-label="Таблица посещаемости класса">
               <thead className="bg-zinc-50">
                 <tr>
-                  <th className="sticky left-0 z-10 min-w-48 bg-zinc-50 px-4 py-3 text-left font-medium text-zinc-600">
+                  <th className="sticky left-0 top-0 z-30 min-w-48 bg-zinc-50 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-zinc-600 shadow-[1px_0_0_#e4e4e7]">
                     Студент
                   </th>
                   {attendanceMatrix.lessons.map((lesson) => (
                     <th
                       key={lesson.id}
-                      className="min-w-36 px-4 py-3 text-left font-medium text-zinc-600"
+                      className="sticky top-0 z-20 min-w-32 bg-zinc-50 px-3 py-3 text-left text-xs font-semibold uppercase tracking-wide text-zinc-600"
                     >
                       <Link
                         href={`/admin/lessons/${lesson.id}`}
@@ -334,7 +342,7 @@ export default async function ClassDetailPage({
                       <p className="text-xs text-zinc-500">{student.login}</p>
                     </td>
                     {student.cells.map((cell) => (
-                      <td key={cell.lessonId} className="whitespace-nowrap px-4 py-3">
+                      <td key={cell.lessonId} className="whitespace-nowrap px-3 py-3">
                         <AttendanceStatusBadge status={cell.status} />
                       </td>
                     ))}
@@ -342,7 +350,7 @@ export default async function ClassDetailPage({
                 ))}
               </tbody>
             </table>
-          </TableWrapper>
+          </div>
         )}
       </section>
     </div>
@@ -351,18 +359,30 @@ export default async function ClassDetailPage({
 
 function AttendanceStatusBadge({ status }: { status: AttendanceCellStatus }) {
   if (status === "present") {
-    return <Badge tone="green">Присутствовал</Badge>;
-  }
-
-  if (status === "absent") {
     return (
-      <Badge className="border-red-200 bg-red-50 text-red-700">
-        Пропуск
+      <Badge tone="green" title="Присутствовал" aria-label="Присутствовал">
+        Был
       </Badge>
     );
   }
 
-  return <Badge tone="amber">Ещё не прошло</Badge>;
+  if (status === "absent") {
+    return (
+      <Badge
+        className="border-red-200 bg-red-50 text-red-700"
+        title="Пропуск"
+        aria-label="Пропуск"
+      >
+        Нет
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge tone="amber" title="Ещё не прошло" aria-label="Ещё не прошло">
+      Ещё
+    </Badge>
+  );
 }
 
 function formatLessonDate(value: string): string {

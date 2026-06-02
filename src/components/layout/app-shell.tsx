@@ -26,8 +26,8 @@ export function AppShell({
 }: AppShellProps) {
   if (variant === "sidebar") {
     return (
-      <main className="min-h-screen bg-[#f7f9fb] text-slate-950 lg:flex">
-        <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-white px-5 py-6 lg:flex lg:min-h-screen lg:flex-col">
+      <main className="min-h-dvh bg-[#f7f9fb] text-slate-950 lg:flex lg:h-dvh lg:overflow-hidden">
+        <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-white px-5 py-6 lg:flex lg:h-dvh lg:flex-col lg:overflow-y-auto">
           <ShellBrand />
 
           <nav aria-label="Админка" className="mt-8 space-y-2">
@@ -51,7 +51,7 @@ export function AppShell({
           </div>
         </aside>
 
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 lg:h-dvh lg:overflow-y-auto">
           <MobileShellHeader navItems={navItems} roleLabel={roleLabel} userName={userName} />
           <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
             {children}
