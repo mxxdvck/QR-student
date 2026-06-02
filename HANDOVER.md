@@ -1,6 +1,6 @@
 # Client Handover
 
-Full user instructions are available in `USER_GUIDE.md`.
+Full user instructions for non-technical users are available in `USER_GUIDE.md`.
 
 ## What Is Implemented
 
