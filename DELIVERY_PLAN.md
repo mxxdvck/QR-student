@@ -7,24 +7,36 @@
 3. Add `.env.example`.
 4. Replace the generic starter page with a compact project placeholder.
 5. Run lint and build.
+6. Status: complete.
 
-## Next Implementation Slice
+## MVP Delivered Locally
 
-1. Choose database provider: Supabase or Neon.
-2. Add schema for admins, classes, students, lessons, and attendance.
-3. Add password hashing and session handling.
-4. Build admin login and a protected admin shell.
-5. Add classes and students CRUD.
+1. Owner/admin/student auth exists.
+2. Users, classes, lessons, QR scan, timezone-stable lesson windows, and attendance are implemented.
+3. Admin class and lesson management exists.
+4. Student cabinet exists.
+5. Attendance matrix exists.
+6. Local QA passed on demo storage.
 
-## First Useful Demo
+## Preview Delivery Slice
 
-The first demo should show:
+1. Configure PostgreSQL for Vercel preview through `DATABASE_URL`.
+2. Configure required preview env vars: `NEXT_PUBLIC_APP_URL`, `SESSION_SECRET`, database URL, and owner seed credentials.
+3. Run preview smoke tests for owner, admin, student, QR check-in, duplicate attendance, and expiry behavior.
+4. Complete final security pass for auth, session handling, role checks, QR access, and production-only database behavior.
+5. Confirm or add session invalidation.
+6. Confirm or add lesson delete/edit behavior.
 
-- Admin can log in.
-- Admin can create a class.
-- Admin can create a student.
-- Admin can create a lesson.
-- Lesson page shows where the QR code will appear.
+## Client Demo
+
+The client demo should show:
+
+- Owner can log in.
+- Owner can create a class, admin, student, and lesson.
+- Admin can manage the class flow.
+- Lesson page shows the QR code and expiry.
+- Student can log in, scan the QR, and see attendance in the cabinet.
+- Admin can review the attendance matrix.
 
 ## Completion Rules
 

@@ -20,6 +20,7 @@ coverage/
 .DS_Store
 Thumbs.db
 
+design-reference/
 design-reference/**/*.zip
 design-reference/**/node_modules/
 design-reference/**/.next/

@@ -15,6 +15,7 @@
 - Class detail pages include an attendance matrix: students as rows, lessons as columns, with present/absent/pending statuses.
 - Student cabinet at `/student` shows only the signed-in student's name, class, lesson cards, per-lesson status, and present/absence totals.
 - UX polish pass tightened empty states, login/scan error feedback, back actions, table readability, mobile spacing, and the QR display.
+- Local QA passed on demo storage (`DEMO_DATABASE=1`).
 
 ## Product Decisions
 
@@ -41,6 +42,13 @@
 - UI should be usable on a phone during check-in and on a desktop for admin tables.
 - Avoid speculative features until the core attendance loop works.
 - Deployment env only needs `NEXT_PUBLIC_APP_URL`, `SESSION_SECRET`, `DATABASE_URL`, and optional seed credentials; QR timing is stored per lesson, not in env.
+
+## Next Risks Before Client Demo
+
+- Verify PostgreSQL behavior on a Vercel preview deployment.
+- Add or confirm session invalidation.
+- Add or confirm lesson delete/edit behavior.
+- Run a final security pass before the client demo.
 
 ## Verification Habit
 
