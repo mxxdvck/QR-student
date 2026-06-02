@@ -59,7 +59,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
             >
               <Input id="admin-name" name="name" label="Имя" placeholder="Иван Иванов" />
               <Input id="admin-login" name="login" label="Логин" placeholder="admin.login" />
-              <GeneratedPasswordField id="admin-password" />
+              <GeneratedPasswordField id="admin-password" controlsPlacement="top" />
               <PendingSubmitButton pendingText="Создаём..." className="w-full lg:w-auto">
                 Создать
               </PendingSubmitButton>

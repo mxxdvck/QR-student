@@ -6,6 +6,7 @@ import { Input } from "./input";
 
 type GeneratedPasswordFieldProps = {
   id: string;
+  controlsPlacement?: "bottom" | "top";
   name?: string;
   label?: string;
 };
@@ -33,6 +34,7 @@ const WORDS = [
 ];
 
 export function GeneratedPasswordField({
+  controlsPlacement = "bottom",
   id,
   label = "Пароль",
   name = "password",
@@ -53,8 +55,25 @@ export function GeneratedPasswordField({
     await window.navigator.clipboard.writeText(password);
   }
 
+  const controls = (
+    <>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <Button type="button" variant="secondary" onClick={() => setPassword(generatePassword())}>
+          Сгенерировать
+        </Button>
+        <Button type="button" variant="secondary" onClick={copyPassword}>
+          Скопировать
+        </Button>
+      </div>
+      <p className="text-sm text-zinc-600">
+        Передайте этот пароль пользователю. После сохранения посмотреть его будет нельзя.
+      </p>
+    </>
+  );
+
   return (
     <div className="space-y-2">
+      {controlsPlacement === "top" ? controls : null}
       <Input
         id={id}
         name={name}
@@ -67,17 +86,7 @@ export function GeneratedPasswordField({
         autoComplete="new-password"
         spellCheck={false}
       />
-      <div className="grid gap-2 sm:grid-cols-2">
-        <Button type="button" variant="secondary" onClick={() => setPassword(generatePassword())}>
-          Сгенерировать
-        </Button>
-        <Button type="button" variant="secondary" onClick={copyPassword}>
-          Скопировать
-        </Button>
-      </div>
-      <p className="text-sm text-zinc-600">
-        Передайте этот пароль пользователю. После сохранения посмотреть его будет нельзя.
-      </p>
+      {controlsPlacement === "bottom" ? controls : null}
     </div>
   );
 }
