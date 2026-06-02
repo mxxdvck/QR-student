@@ -13,8 +13,11 @@ import {
   createDemoClass,
   createDemoLesson,
   createDemoStudent,
+  deleteDemoAdminUser,
+  deleteDemoClass,
   deleteDemoStudent,
   findDemoUserByLogin,
+  getDemoAdminUsers,
   getDemoClassById,
   updateDemoStudentPassword,
 } from "@/lib/demo-store";
@@ -27,6 +30,7 @@ import {
   sessionCookieName,
   sessionMaxAgeSeconds,
 } from "@/lib/session";
+import { canDeleteAdminUser } from "@/lib/admin-users";
 import { normalizeCreateUserInput, normalizeStudentPassword } from "@/lib/students";
 
 export async function loginAction(formData: FormData): Promise<void> {
@@ -189,6 +193,111 @@ export async function createStudentAction(formData: FormData): Promise<void> {
     revalidatePath(`/admin/classes/${classId}`);
   }
   redirect(redirectPath);
+}
+
+export async function createAdminAction(formData: FormData): Promise<void> {
+  const session = await requireRole("admin");
+  let user: ReturnType<typeof normalizeCreateUserInput>;
+
+  try {
+    user = normalizeCreateUserInput(
+      {
+        role: "admin",
+        name: String(formData.get("name") ?? ""),
+        login: String(formData.get("login") ?? ""),
+        password: String(formData.get("password") ?? ""),
+      },
+      session.role,
+    );
+  } catch {
+    redirect("/admin/users?error=admin-fields");
+  }
+
+  if (isDemoDatabase()) {
+    const result = await createDemoStudent(user);
+
+    if (result.status === "duplicate-login") {
+      redirect("/admin/users?error=admin-login");
+    }
+  } else {
+    const existingUser = await getDb().query.users.findFirst({
+      where: eq(users.login, user.login),
+    });
+
+    if (existingUser) {
+      redirect("/admin/users?error=admin-login");
+    }
+
+    await getDb().insert(users).values({
+      id: createDatabaseId(),
+      name: user.name,
+      login: user.login,
+      passwordHash: createPasswordHash(user.password),
+      role: "admin",
+      classId: null,
+    });
+  }
+
+  revalidatePath("/admin/users");
+  redirect("/admin/users");
+}
+
+export async function deleteAdminUserAction(formData: FormData): Promise<void> {
+  const session = await requireRole("admin");
+  const userId = String(formData.get("userId") ?? "");
+
+  if (!userId) {
+    redirect("/admin/users");
+  }
+
+  if (isDemoDatabase()) {
+    const target = (await getDemoAdminUsers()).find((user) => user.id === userId);
+
+    if (!target || !canDeleteAdminUser(session.role, target.role)) {
+      redirect("/admin/users?error=delete-user");
+    }
+
+    await deleteDemoAdminUser(userId);
+  } else {
+    const target = await getDb().query.users.findFirst({
+      columns: {
+        id: true,
+        role: true,
+      },
+      where: eq(users.id, userId),
+    });
+
+    if (!target || !canDeleteAdminUser(session.role, target.role)) {
+      redirect("/admin/users?error=delete-user");
+    }
+
+    await getDb().delete(users).where(and(eq(users.id, userId), eq(users.role, "admin")));
+  }
+
+  revalidatePath("/admin/users");
+  redirect("/admin/users");
+}
+
+export async function deleteClassAction(formData: FormData): Promise<void> {
+  await requireRole("admin");
+  const classId = String(formData.get("classId") ?? "");
+
+  if (!classId) {
+    redirect("/admin/classes");
+  }
+
+  if (isDemoDatabase()) {
+    await deleteDemoClass(classId);
+  } else {
+    await getDb().transaction(async (tx) => {
+      await tx.delete(users).where(and(eq(users.classId, classId), eq(users.role, "student")));
+      await tx.delete(classes).where(eq(classes.id, classId));
+    });
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/classes");
+  redirect("/admin/classes");
 }
 
 export async function deleteStudentAction(formData: FormData): Promise<void> {

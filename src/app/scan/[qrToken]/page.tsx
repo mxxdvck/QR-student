@@ -28,20 +28,26 @@ const scanUiStates: Record<string, ScanUiState> = {
   success: {
     tone: "success",
     label: "Отмечено",
-    title: "Посещение отмечено",
+    title: "Вы отмечены",
     description: "Ваша отметка посещения для этого занятия сохранена.",
   },
   "already-marked": {
     tone: "info",
     label: "Уже отмечено",
-    title: "Вы уже отметились",
+    title: "Вы уже отмечались",
     description: "Посещение этого занятия уже было записано ранее.",
+  },
+  "not-started": {
+    tone: "info",
+    label: "Рано",
+    title: "Отметка ещё не началась",
+    description: "QR-код уже доступен, но отметиться можно только после начала занятия.",
   },
   closed: {
     tone: "warning",
     label: "Закрыто",
-    title: "Окно отметки закрыто",
-    description: "Разрешенное время для отметки уже закончилось. Обратитесь к администратору, если это ошибка.",
+    title: "Время отметки закончилось",
+    description: "Разрешённое время для отметки уже закончилось.",
   },
   "wrong-class": {
     tone: "error",
@@ -53,7 +59,8 @@ const scanUiStates: Record<string, ScanUiState> = {
     tone: "error",
     label: "Нужен студент",
     title: "Войдите как студент",
-    description: "Отмечаться по QR-коду могут только студенты. Используйте логин, выданный администратором.",
+    description:
+      "Отмечаться по QR-коду могут только студенты. Используйте логин, выданный администратором.",
   },
   "not-found": {
     tone: "error",

@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { createClassAction } from "@/app/actions";
+import { createClassAction, deleteClassAction } from "@/app/actions";
 import {
-  Button,
   Badge,
+  Button,
   Card,
   CardContent,
   CardHeader,
+  ConfirmSubmitButton,
   EmptyState,
   Input,
   PageHeader,
@@ -22,7 +23,9 @@ type ClassesPageProps = {
 export default async function ClassesPage({ searchParams }: ClassesPageProps) {
   const [classRows, params] = await Promise.all([getClassesWithStats(), searchParams]);
   const errorMessage =
-    params.error === "missing-name" ? "Введите название класса перед созданием." : null;
+    params.error === "missing-name"
+      ? "Введите название класса перед созданием."
+      : null;
 
   return (
     <div className="space-y-6">
@@ -71,7 +74,7 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
                 <th className="px-4 py-3 font-medium">Студенты</th>
                 <th className="px-4 py-3 font-medium">Занятия</th>
                 <th className="px-4 py-3 font-medium">Создан</th>
-                <th className="px-4 py-3 text-right font-medium">Переход</th>
+                <th className="px-4 py-3 text-right font-medium">Действие</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100 bg-white">
@@ -90,12 +93,20 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
                     {classItem.createdAt.toLocaleDateString("ru-RU")}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link
-                      href={`/admin/classes/${classItem.id}`}
-                      className="text-sm font-medium text-zinc-950 underline-offset-4 hover:underline"
-                    >
-                      Открыть
-                    </Link>
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        href={`/admin/classes/${classItem.id}`}
+                        className="text-sm font-medium text-zinc-950 underline-offset-4 hover:underline"
+                      >
+                        Открыть
+                      </Link>
+                      <form action={deleteClassAction}>
+                        <input type="hidden" name="classId" value={classItem.id} />
+                        <ConfirmSubmitButton confirmText="Удалить класс? Вместе с ним удалятся студенты, занятия и отметки посещаемости.">
+                          Удалить
+                        </ConfirmSubmitButton>
+                      </form>
+                    </div>
                   </td>
                 </tr>
               ))}

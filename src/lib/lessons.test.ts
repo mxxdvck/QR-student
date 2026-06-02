@@ -59,17 +59,63 @@ describe("lesson helpers", () => {
     );
   });
 
-  it("marks a lesson check-in open only inside the configured window", () => {
+  it("marks a lesson check-in as not-started, open, or closed by the configured window", () => {
     const lesson = {
       date: "2026-06-02",
       startTime: "09:30",
       checkInMinutes: 15,
     };
 
-    expect(getLessonCheckInStatus(lesson, new Date(2026, 5, 2, 9, 29))).toBe("closed");
-    expect(getLessonCheckInStatus(lesson, new Date(2026, 5, 2, 9, 30))).toBe("open");
-    expect(getLessonCheckInStatus(lesson, new Date(2026, 5, 2, 9, 45))).toBe("open");
-    expect(getLessonCheckInStatus(lesson, new Date(2026, 5, 2, 9, 46))).toBe("closed");
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:29:00.000Z"))).toBe(
+      "not-started",
+    );
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:30:00.000Z"))).toBe(
+      "open",
+    );
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:35:00.000Z"))).toBe(
+      "open",
+    );
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:45:00.000Z"))).toBe(
+      "open",
+    );
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:46:00.000Z"))).toBe(
+      "closed",
+    );
+  });
+
+  it("uses Europe/Moscow project time instead of the server default timezone", () => {
+    const originalTimezone = process.env.TZ;
+    process.env.TZ = "UTC";
+
+    try {
+      const lesson = {
+        date: "2026-06-02",
+        startTime: "15:00",
+        checkInMinutes: 15,
+      };
+
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T11:59:59.999Z"))).toBe(
+        "not-started",
+      );
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:00:00.000Z"))).toBe(
+        "open",
+      );
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:10:00.000Z"))).toBe(
+        "open",
+      );
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:15:00.000Z"))).toBe(
+        "open",
+      );
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:15:00.001Z"))).toBe(
+        "closed",
+      );
+    } finally {
+      if (originalTimezone === undefined) {
+        delete process.env.TZ;
+      } else {
+        process.env.TZ = originalTimezone;
+      }
+    }
   });
 
   it("maps attendance cells to present, absent, or pending", () => {
@@ -79,15 +125,15 @@ describe("lesson helpers", () => {
       checkInMinutes: 15,
     };
 
-    expect(getAttendanceCellStatus(lesson, true, new Date(2026, 5, 2, 9, 35))).toBe(
-      "present",
-    );
-    expect(getAttendanceCellStatus(lesson, false, new Date(2026, 5, 2, 9, 45))).toBe(
-      "pending",
-    );
-    expect(getAttendanceCellStatus(lesson, false, new Date(2026, 5, 2, 9, 46))).toBe(
-      "absent",
-    );
+    expect(
+      getAttendanceCellStatus(lesson, true, new Date("2026-06-02T06:35:00.000Z")),
+    ).toBe("present");
+    expect(
+      getAttendanceCellStatus(lesson, false, new Date("2026-06-02T06:45:00.000Z")),
+    ).toBe("pending");
+    expect(
+      getAttendanceCellStatus(lesson, false, new Date("2026-06-02T06:46:00.000Z")),
+    ).toBe("absent");
   });
 
   it("summarizes only present and absent attendance statuses", () => {

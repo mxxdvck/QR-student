@@ -3,7 +3,11 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { Badge, PageHeader, QrCard } from "@/components/ui";
 import { getLessonById } from "@/lib/admin-data";
-import { buildScanUrl, getLessonCheckInStatus } from "@/lib/lessons";
+import {
+  buildScanUrl,
+  getLessonCheckInStatus,
+  type LessonCheckInStatus,
+} from "@/lib/lessons";
 import QRCode from "qrcode";
 
 type LessonPageProps = {
@@ -41,14 +45,8 @@ export default async function LessonPage({ params }: LessonPageProps) {
         description={`${lesson.className} | ${formatLessonDate(lesson.date)} в ${formatLessonTime(lesson.startTime)}`}
         actions={
           <>
-            <Badge
-              className={
-                status === "open"
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                  : "border-zinc-200 bg-zinc-100 text-zinc-700"
-              }
-            >
-              {status === "open" ? "Отметка открыта" : "Отметка закрыта"}
+            <Badge className={getLessonStatusClassName(status)}>
+              {getLessonStatusLabel(status)}
             </Badge>
             <Link
               href={`/admin/classes/${lesson.classId}`}
@@ -65,12 +63,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
         qrCodeDataUrl={qrCodeDataUrl}
         scanUrl={scanUrl}
       >
-          <div className="grid gap-3 text-sm sm:grid-cols-4">
-            <InfoItem label="Класс" value={lesson.className} />
-            <InfoItem label="Дата" value={formatLessonDate(lesson.date)} />
-            <InfoItem label="Начало" value={formatLessonTime(lesson.startTime)} />
-            <InfoItem label="Окно" value={`${lesson.checkInMinutes} мин`} />
-          </div>
+        <div className="grid gap-3 text-sm sm:grid-cols-4">
+          <InfoItem label="Класс" value={lesson.className} />
+          <InfoItem label="Дата" value={formatLessonDate(lesson.date)} />
+          <InfoItem label="Начало" value={formatLessonTime(lesson.startTime)} />
+          <InfoItem label="Окно" value={`${lesson.checkInMinutes} мин`} />
+        </div>
       </QrCard>
     </div>
   );
@@ -83,6 +81,30 @@ function InfoItem({ label, value }: { label: string; value: string }) {
       <p className="mt-1 font-semibold text-zinc-950">{value}</p>
     </div>
   );
+}
+
+function getLessonStatusClassName(status: LessonCheckInStatus): string {
+  if (status === "open") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (status === "not-started") {
+    return "border-sky-200 bg-sky-50 text-sky-700";
+  }
+
+  return "border-zinc-200 bg-zinc-100 text-zinc-700";
+}
+
+function getLessonStatusLabel(status: LessonCheckInStatus): string {
+  if (status === "open") {
+    return "Отметка открыта";
+  }
+
+  if (status === "not-started") {
+    return "Отметка ещё не началась";
+  }
+
+  return "Отметка закрыта";
 }
 
 function getRequestOrigin(requestHeaders: Headers): string {

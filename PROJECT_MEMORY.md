@@ -20,6 +20,7 @@
 
 - MVP stays intentionally small and operational.
 - QR check-in is time-limited.
+- Lesson `date` and `startTime` are interpreted as local project time in `Europe/Moscow`, not as the server's default timezone. This keeps QR check-in windows stable between local development and Vercel.
 - Lesson creation generates and stores a URL-safe `qrToken`. The lesson detail page renders a large QR code that points to `/scan/[qrToken]`.
 - Attendance must be unique per student and lesson.
 - Absences are not stored as rows. They are derived from lessons without a matching attendance record.

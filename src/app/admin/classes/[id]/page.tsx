@@ -12,11 +12,9 @@ import {
   FormError,
   Input,
   PageHeader,
-  Select,
   StatCard,
   TableWrapper,
 } from "@/components/ui";
-import { requireRole } from "@/lib/auth";
 import {
   getClassById,
   getClassAttendanceMatrix,
@@ -54,9 +52,6 @@ export default async function ClassDetailPage({
   if (!classItem) {
     notFound();
   }
-
-  const session = await requireRole("admin");
-  const canCreateAdmins = session.role === "owner";
 
   const [stats, students, lessons, attendanceMatrix, query] = await Promise.all([
     getClassStats(classItem.id),
@@ -118,7 +113,7 @@ export default async function ClassDetailPage({
         <CardContent>
           <form
             action={createStudentAction}
-            className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_150px_auto] lg:items-end"
+            className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end"
           >
             <input type="hidden" name="classId" value={classItem.id} />
             <Input id="student-name" name="name" label="Имя" placeholder="Анна Петрова" />
@@ -130,10 +125,6 @@ export default async function ClassDetailPage({
               label="Пароль"
               placeholder="Минимум 6 символов"
             />
-            <Select id="user-role" name="role" label="Role" defaultValue="student">
-              <option value="student">Student</option>
-              {canCreateAdmins ? <option value="admin">Admin</option> : null}
-            </Select>
             <Button type="submit" className="w-full lg:w-auto">
               Добавить
             </Button>

@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { parseProjectDateTime } from "./project-time";
 
 type LessonInput = {
   title: string;
@@ -20,7 +21,7 @@ type LessonWindow = {
   checkInMinutes: number;
 };
 
-type LessonCheckInStatus = "open" | "closed";
+export type LessonCheckInStatus = "not-started" | "open" | "closed";
 export type AttendanceCellStatus = "present" | "absent" | "pending";
 
 export function normalizeLessonInput(input: LessonInput): NormalizedLessonInput {
@@ -73,7 +74,11 @@ export function getLessonCheckInStatus(
   const startsAt = parseLessonStart(lesson.date, lesson.startTime);
   const closesAt = new Date(startsAt.getTime() + lesson.checkInMinutes * 60_000);
 
-  return now >= startsAt && now <= closesAt ? "open" : "closed";
+  if (now < startsAt) {
+    return "not-started";
+  }
+
+  return now <= closesAt ? "open" : "closed";
 }
 
 export function getAttendanceCellStatus(
@@ -119,8 +124,5 @@ function isValidDateInput(value: string): boolean {
 }
 
 function parseLessonStart(date: string, startTime: string): Date {
-  const [year, month, day] = date.split("-").map(Number);
-  const [hours, minutes] = startTime.slice(0, 5).split(":").map(Number);
-
-  return new Date(year, month - 1, day, hours, minutes);
+  return parseProjectDateTime(date, startTime);
 }

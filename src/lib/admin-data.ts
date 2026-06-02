@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, count, desc, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq, or } from "drizzle-orm";
 import { getDb, isDemoDatabase } from "@/db/client";
 import { attendance, classes, lessons, users } from "@/db/schema";
 import {
@@ -11,6 +11,7 @@ import {
   getDemoClassStats,
   getDemoClassStudents,
   getDemoAdminStudentDetail,
+  getDemoAdminUsers,
   getDemoDashboardStats,
   getDemoLessonById,
 } from "@/lib/demo-store";
@@ -38,6 +39,24 @@ export async function getAdminDashboardStats() {
     students: studentCount.value,
     lessons: lessonCount.value,
   };
+}
+
+export async function getAdminUsers() {
+  if (isDemoDatabase()) {
+    return getDemoAdminUsers();
+  }
+
+  return getDb()
+    .select({
+      id: users.id,
+      name: users.name,
+      login: users.login,
+      role: users.role,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(or(eq(users.role, "owner"), eq(users.role, "admin")))
+    .orderBy(desc(users.createdAt));
 }
 
 export async function getClasses() {

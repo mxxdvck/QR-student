@@ -7,7 +7,7 @@ type ScanLesson = {
   checkInMinutes: number;
 };
 
-type ScanResult = "ready" | "wrong-class" | "closed" | "already-marked";
+type ScanResult = "ready" | "wrong-class" | "not-started" | "closed" | "already-marked";
 
 type ResolveScanResultInput = {
   lesson: ScanLesson;
@@ -26,8 +26,10 @@ export function resolveScanResult({
     return "wrong-class";
   }
 
-  if (getLessonCheckInStatus(lesson, now) === "closed") {
-    return "closed";
+  const checkInStatus = getLessonCheckInStatus(lesson, now);
+
+  if (checkInStatus !== "open") {
+    return checkInStatus;
   }
 
   if (hasAttendance) {

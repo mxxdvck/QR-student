@@ -15,7 +15,7 @@ export default async function AdminLayout({
       navItems={[
         { href: "/admin", label: "Панель" },
         { href: "/admin/classes", label: "Классы" },
-        { href: "/admin/classes", label: "Посещаемость" },
+        { href: "/admin/users", label: "Пользователи" },
       ]}
       roleLabel="Администратор"
       userName={session.name}

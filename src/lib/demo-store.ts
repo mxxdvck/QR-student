@@ -88,6 +88,20 @@ export async function getDemoDashboardStats() {
   };
 }
 
+export async function getDemoAdminUsers() {
+  const store = await readStore();
+  return store.users
+    .filter((user) => user.role === "owner" || user.role === "admin")
+    .toSorted((a, b) => compareDesc(a.createdAt, b.createdAt))
+    .map((user) => ({
+      id: user.id,
+      name: user.name,
+      login: user.login,
+      role: user.role,
+      createdAt: new Date(user.createdAt),
+    }));
+}
+
 export async function getDemoClasses() {
   const store = await readStore();
   return store.classes
@@ -293,6 +307,27 @@ export async function createDemoClass(name: string) {
   return classItem;
 }
 
+export async function deleteDemoClass(classId: string) {
+  const store = await readStore();
+  const studentIds = new Set(
+    store.users
+      .filter((user) => user.role === "student" && user.classId === classId)
+      .map((user) => user.id),
+  );
+  const lessonIds = new Set(
+    store.lessons.filter((lesson) => lesson.classId === classId).map((lesson) => lesson.id),
+  );
+
+  store.users = store.users.filter((user) => !studentIds.has(user.id));
+  store.lessons = store.lessons.filter((lesson) => lesson.classId !== classId);
+  store.attendance = store.attendance.filter(
+    (item) => !studentIds.has(item.studentId) && !lessonIds.has(item.lessonId),
+  );
+  store.classes = store.classes.filter((classItem) => classItem.id !== classId);
+
+  await writeStore(store);
+}
+
 export async function createDemoStudent(input: {
   classId: string | null;
   name: string;
@@ -333,6 +368,12 @@ export async function deleteDemoStudent(classId: string, studentId: string) {
     (user) => !(user.id === studentId && user.classId === classId && user.role === "student"),
   );
   store.attendance = store.attendance.filter((item) => item.studentId !== studentId);
+  await writeStore(store);
+}
+
+export async function deleteDemoAdminUser(userId: string) {
+  const store = await readStore();
+  store.users = store.users.filter((user) => !(user.id === userId && user.role === "admin"));
   await writeStore(store);
 }
 

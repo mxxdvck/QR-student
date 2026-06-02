@@ -9,13 +9,78 @@ const lesson = {
 };
 
 describe("scan result resolver", () => {
-  it("accepts a student from the lesson class during the open window", () => {
+  it("uses project timezone when resolving a scan window", () => {
+    const originalTimezone = process.env.TZ;
+    process.env.TZ = "UTC";
+
+    try {
+      const moscowLesson = {
+        ...lesson,
+        startTime: "15:00",
+      };
+
+      expect(
+        resolveScanResult({
+          lesson: moscowLesson,
+          studentClassId: "class-1",
+          hasAttendance: false,
+          now: new Date("2026-06-02T11:59:59.999Z"),
+        }),
+      ).toBe("not-started");
+      expect(
+        resolveScanResult({
+          lesson: moscowLesson,
+          studentClassId: "class-1",
+          hasAttendance: false,
+          now: new Date("2026-06-02T12:00:00.000Z"),
+        }),
+      ).toBe("ready");
+      expect(
+        resolveScanResult({
+          lesson: moscowLesson,
+          studentClassId: "class-1",
+          hasAttendance: false,
+          now: new Date("2026-06-02T12:15:00.001Z"),
+        }),
+      ).toBe("closed");
+    } finally {
+      if (originalTimezone === undefined) {
+        delete process.env.TZ;
+      } else {
+        process.env.TZ = originalTimezone;
+      }
+    }
+  });
+
+  it("rejects scans before the check-in window starts", () => {
     expect(
       resolveScanResult({
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date(2026, 5, 2, 9, 35),
+        now: new Date("2026-06-02T06:29:00.000Z"),
+      }),
+    ).toBe("not-started");
+  });
+
+  it("accepts a student from the lesson class at the start of the open window", () => {
+    expect(
+      resolveScanResult({
+        lesson,
+        studentClassId: "class-1",
+        hasAttendance: false,
+        now: new Date("2026-06-02T06:30:00.000Z"),
+      }),
+    ).toBe("ready");
+  });
+
+  it("accepts a student from the lesson class inside the open window", () => {
+    expect(
+      resolveScanResult({
+        lesson,
+        studentClassId: "class-1",
+        hasAttendance: false,
+        now: new Date("2026-06-02T06:35:00.000Z"),
       }),
     ).toBe("ready");
   });
@@ -26,9 +91,20 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-2",
         hasAttendance: false,
-        now: new Date(2026, 5, 2, 9, 35),
+        now: new Date("2026-06-02T06:35:00.000Z"),
       }),
     ).toBe("wrong-class");
+  });
+
+  it("accepts scans at the exact check-in close time", () => {
+    expect(
+      resolveScanResult({
+        lesson,
+        studentClassId: "class-1",
+        hasAttendance: false,
+        now: new Date("2026-06-02T06:45:00.000Z"),
+      }),
+    ).toBe("ready");
   });
 
   it("rejects scans after the check-in window closes", () => {
@@ -37,7 +113,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date(2026, 5, 2, 9, 46),
+        now: new Date("2026-06-02T06:46:00.000Z"),
       }),
     ).toBe("closed");
   });
@@ -48,7 +124,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: true,
-        now: new Date(2026, 5, 2, 9, 35),
+        now: new Date("2026-06-02T06:35:00.000Z"),
       }),
     ).toBe("already-marked");
   });
