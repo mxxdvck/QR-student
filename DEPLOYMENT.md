@@ -45,6 +45,21 @@ seed owner is present.
 The seed script requires `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`; it does
 not hardcode a production password.
 
+Set the owner login and password through env values before running
+`npm run db:seed`. Do not commit real logins or passwords. For Vercel Preview
+and Production, use a real login and a long generated password.
+
+If the owner already exists and credentials need to change, set
+`SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`, then run:
+
+```sh
+npm run owner:update-credentials
+```
+
+When there is more than one owner, also set `OWNER_CURRENT_LOGIN` so the script
+updates the intended existing owner. The script updates credentials only; it
+does not create a new owner and does not print the password.
+
 Preview must be checked against PostgreSQL through `DATABASE_URL`, not the local
 demo store. Keep `DEMO_DATABASE` unset in Vercel Preview and Production.
 

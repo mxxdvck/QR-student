@@ -11,12 +11,12 @@ describe("student helpers", () => {
       normalizeStudentInput({
         name: "  Alice   Johnson ",
         login: " Alice.Login ",
-        password: " secret123 ",
+        password: " secret123456 ",
       }),
     ).toEqual({
       name: "Alice Johnson",
       login: "alice.login",
-      password: " secret123 ",
+      password: " secret123456 ",
     });
   });
 
@@ -25,28 +25,28 @@ describe("student helpers", () => {
       normalizeStudentInput({
         name: "",
         login: "student",
-        password: "secret123",
+        password: "secret123456",
       }),
     ).toThrow("Student name is required");
   });
 
-  it("requires a password with at least eight characters", () => {
+  it("requires a password with at least twelve characters", () => {
     expect(() =>
       normalizeStudentInput({
         name: "Alice",
         login: "alice",
         password: "12345",
       }),
-    ).toThrow("Student password must be at least 8 characters");
+    ).toThrow("Student password must be at least 12 characters");
   });
 
   it("normalizes a new student password before changing it", () => {
-    expect(normalizeStudentPassword(" new-secret ")).toBe(" new-secret ");
+    expect(normalizeStudentPassword(" new-secret123 ")).toBe(" new-secret123 ");
   });
 
   it("rejects a short new student password", () => {
     expect(() => normalizeStudentPassword("12345")).toThrow(
-      "Student password must be at least 8 characters",
+      "Student password must be at least 12 characters",
     );
   });
 
@@ -56,7 +56,7 @@ describe("student helpers", () => {
         {
           name: "  Alice   Johnson ",
           login: " Alice.Login ",
-          password: " secret123 ",
+          password: " secret123456 ",
           role: "student",
           classId: "class-1",
         },
@@ -65,7 +65,7 @@ describe("student helpers", () => {
     ).toEqual({
       name: "Alice Johnson",
       login: "alice.login",
-      password: " secret123 ",
+      password: " secret123456 ",
       role: "student",
       classId: "class-1",
     });
@@ -77,7 +77,7 @@ describe("student helpers", () => {
         {
           name: "Alice",
           login: "alice",
-          password: "secret123",
+          password: "secret123456",
           role: "student",
           classId: "",
         },
@@ -92,7 +92,7 @@ describe("student helpers", () => {
         {
           name: "  Admin User ",
           login: " Admin.Login ",
-          password: " secret123 ",
+          password: " secret123456 ",
           role: "admin",
           classId: "class-1",
         },
@@ -101,7 +101,7 @@ describe("student helpers", () => {
     ).toEqual({
       name: "Admin User",
       login: "admin.login",
-      password: " secret123 ",
+      password: " secret123456 ",
       role: "admin",
       classId: null,
     });
@@ -113,7 +113,7 @@ describe("student helpers", () => {
         {
           name: "Admin User",
           login: "admin.user",
-          password: "secret123",
+          password: "secret123456",
           role: "admin",
           classId: "",
         },
@@ -126,7 +126,7 @@ describe("student helpers", () => {
         {
           name: "Owner User",
           login: "owner.user",
-          password: "secret123",
+          password: "secret123456",
           role: "owner",
           classId: "",
         },
@@ -141,7 +141,7 @@ describe("student helpers", () => {
         {
           name: "Alice",
           login: "alice",
-          password: "secret123",
+          password: "secret123456",
           role: "student",
           classId: "class-1",
         },

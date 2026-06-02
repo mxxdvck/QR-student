@@ -44,6 +44,17 @@ npm run production:db-check
 `db:push` applies the schema. `db:seed` creates one owner user. Configure
 credentials through `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`; the seed
 script does not hardcode a production password.
+
+Do not commit real logins or passwords. For Vercel env, use a normal owner login
+and a long generated password. If an existing owner needs new credentials after
+seed, set `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD` and run:
+
+```sh
+npm run owner:update-credentials
+```
+
+If the database has multiple owners, also set `OWNER_CURRENT_LOGIN`.
+
 `production:db-check` verifies the production tables and seeded owner.
 
 For Vercel production setup, see `DEPLOYMENT.md`.

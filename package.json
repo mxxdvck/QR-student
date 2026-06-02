@@ -13,6 +13,7 @@
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx scripts/seed.ts",
+    "owner:update-credentials": "tsx scripts/update-owner-credentials.ts",
     "production:db-check": "tsx scripts/verify-production-db.ts",
     "demo:db": "tsx --env-file=.env.local scripts/setup-local-demo.ts"
   },

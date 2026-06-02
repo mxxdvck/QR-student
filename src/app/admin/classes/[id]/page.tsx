@@ -10,6 +10,7 @@ import {
   ConfirmSubmitButton,
   EmptyState,
   FormError,
+  GeneratedPasswordField,
   Input,
   PageHeader,
   StatCard,
@@ -34,7 +35,7 @@ type ClassDetailPageProps = {
 };
 
 const studentErrorMessages: Record<string, string> = {
-  "student-fields": "Заполните имя, логин и пароль минимум из 8 символов.",
+  "student-fields": "Заполните имя, логин и пароль минимум из 12 символов.",
   "student-login": "Пользователь с таким логином уже существует.",
 };
 
@@ -118,13 +119,7 @@ export default async function ClassDetailPage({
             <input type="hidden" name="classId" value={classItem.id} />
             <Input id="student-name" name="name" label="Имя" placeholder="Анна Петрова" />
             <Input id="student-login" name="login" label="Логин" placeholder="anna.petrova" />
-            <Input
-              id="student-password"
-              name="password"
-              type="password"
-              label="Пароль"
-              placeholder="Минимум 8 символов"
-            />
+            <GeneratedPasswordField id="student-password" />
             <Button type="submit" className="w-full lg:w-auto">
               Добавить
             </Button>

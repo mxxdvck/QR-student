@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { normalizeCreateUserInput, normalizeStudentPassword } from "./students";
 
 describe("student security validation", () => {
-  it("requires passwords to be at least 8 characters", () => {
-    expect(() => normalizeStudentPassword("1234567")).toThrow(/8 characters/);
-    expect(normalizeStudentPassword("12345678")).toBe("12345678");
+  it("requires passwords to be at least 12 characters", () => {
+    expect(() => normalizeStudentPassword("12345678901")).toThrow(/12 characters/);
+    expect(normalizeStudentPassword("123456789012")).toBe("123456789012");
   });
 
   it("prevents admins from creating admin users", () => {
@@ -14,7 +14,7 @@ describe("student security validation", () => {
           role: "admin",
           name: "Helper Admin",
           login: "helper.admin",
-          password: "password8",
+          password: "password12345",
         },
         "admin",
       ),
@@ -28,7 +28,7 @@ describe("student security validation", () => {
           role: "admin",
           name: "Helper Admin",
           login: "helper.admin",
-          password: "password8",
+          password: "password12345",
         },
         "owner",
       ),

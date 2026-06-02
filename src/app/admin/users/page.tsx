@@ -8,6 +8,7 @@ import {
   ConfirmSubmitButton,
   EmptyState,
   FormError,
+  GeneratedPasswordField,
   Input,
   PageHeader,
   TableWrapper,
@@ -23,7 +24,7 @@ type AdminUsersPageProps = {
 };
 
 const errorMessages: Record<string, string> = {
-  "admin-fields": "Заполните имя, логин и пароль минимум из 8 символов.",
+  "admin-fields": "Заполните имя, логин и пароль минимум из 12 символов.",
   "admin-login": "Пользователь с таким логином уже существует.",
   "delete-user": "Этого пользователя нельзя удалить.",
 };
@@ -58,13 +59,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
             >
               <Input id="admin-name" name="name" label="Имя" placeholder="Иван Иванов" />
               <Input id="admin-login" name="login" label="Логин" placeholder="admin.login" />
-              <Input
-                id="admin-password"
-                name="password"
-                type="password"
-                label="Пароль"
-                placeholder="Минимум 8 символов"
-              />
+              <GeneratedPasswordField id="admin-password" />
               <Button type="submit" className="w-full lg:w-auto">
                 Создать
               </Button>

@@ -9,7 +9,7 @@ import {
   CardHeader,
   EmptyState,
   FormError,
-  Input,
+  GeneratedPasswordField,
   PageHeader,
   StatCard,
 } from "@/components/ui";
@@ -32,7 +32,7 @@ type AdminStudentPageProps = {
 };
 
 const passwordErrorMessages: Record<string, string> = {
-  password: "Введите новый пароль минимум из 8 символов.",
+  password: "Введите новый пароль минимум из 12 символов.",
 };
 
 export default async function AdminStudentPage({
@@ -140,13 +140,7 @@ export default async function AdminStudentPage({
             ) : null}
             <form action={updateStudentPasswordAction} className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
               <input type="hidden" name="studentId" value={detail.student.id} />
-              <Input
-                id="student-new-password"
-                name="password"
-                type="password"
-                label="Новый пароль"
-                placeholder="Минимум 8 символов"
-              />
+              <GeneratedPasswordField id="student-new-password" />
               <Button type="submit" className="w-full sm:w-auto">
                 Сменить пароль
               </Button>

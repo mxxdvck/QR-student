@@ -4,6 +4,7 @@ export { Card, CardContent, CardHeader } from "./card";
 export { ConfirmSubmitButton } from "./confirm-submit-button";
 export { EmptyState } from "./empty-state";
 export { FormError } from "./form-error";
+export { GeneratedPasswordField } from "./generated-password-field";
 export { Input } from "./input";
 export { LoadingState } from "./loading-state";
 export { PageHeader } from "./page-header";
