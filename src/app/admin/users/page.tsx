@@ -23,7 +23,7 @@ type AdminUsersPageProps = {
 };
 
 const errorMessages: Record<string, string> = {
-  "admin-fields": "Заполните имя, логин и пароль минимум из 6 символов.",
+  "admin-fields": "Заполните имя, логин и пароль минимум из 8 символов.",
   "admin-login": "Пользователь с таким логином уже существует.",
   "delete-user": "Этого пользователя нельзя удалить.",
 };
@@ -63,7 +63,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
                 name="password"
                 type="password"
                 label="Пароль"
-                placeholder="Минимум 6 символов"
+                placeholder="Минимум 8 символов"
               />
               <Button type="submit" className="w-full lg:w-auto">
                 Создать

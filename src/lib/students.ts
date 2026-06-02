@@ -31,8 +31,8 @@ export function normalizeStudentInput(input: StudentInput): StudentInput {
     throw new Error("Student login is required");
   }
 
-  if (password.length < 6) {
-    throw new Error("Student password must be at least 6 characters");
+  if (password.length < 8) {
+    throw new Error("Student password must be at least 8 characters");
   }
 
   return { name, login, password };
@@ -72,8 +72,8 @@ export function normalizeCreateUserInput(
 }
 
 export function normalizeStudentPassword(password: string): string {
-  if (password.length < 6) {
-    throw new Error("Student password must be at least 6 characters");
+  if (password.length < 8) {
+    throw new Error("Student password must be at least 8 characters");
   }
 
   return password;

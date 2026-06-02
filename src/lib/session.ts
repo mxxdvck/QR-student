@@ -10,6 +10,12 @@ export type SessionPayload = {
   role: UserRole;
 };
 
+export type SessionUserSnapshot = {
+  id: string;
+  name: string;
+  role: UserRole;
+};
+
 export const sessionMaxAgeSeconds = 60 * 60 * 24 * 7;
 
 export function getRoleHomePath(role: UserRole): "/admin" | "/student" {
@@ -22,6 +28,21 @@ export function canAccessRole(requiredRole: UserRole, actualRole: UserRole): boo
   }
 
   return actualRole === requiredRole;
+}
+
+export function getAuthoritativeSession(
+  session: SessionPayload,
+  user: SessionUserSnapshot | null,
+): SessionPayload | null {
+  if (!user || user.id !== session.userId || user.role !== session.role) {
+    return null;
+  }
+
+  return {
+    userId: user.id,
+    name: user.name,
+    role: user.role,
+  };
 }
 
 export function getSafeRedirectPath(value: string | null | undefined, fallback: string): string {

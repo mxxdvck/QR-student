@@ -42,12 +42,11 @@
 - Mobile and desktop polish.
 - Status: complete for MVP.
 
-## Phase 5: Preview and Client Demo
+## Phase 5: Vercel Preview and Client Demo
 
 - Configure PostgreSQL and Vercel preview env vars.
 - Seed the production/preview owner from env credentials.
 - Smoke-test owner/admin/student flows on preview.
-- Run security pass for session handling, authorization, QR access, and production env behavior.
-- Add/confirm session invalidation.
-- Add/confirm lesson edit/delete behavior.
+- Close session invalidation, lesson delete/edit, and mini security-pass items before the client demo.
+- Run security checks for session handling, authorization, QR access, and production env behavior.
 - Prepare client demo using the completed MVP flow.

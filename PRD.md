@@ -24,7 +24,7 @@ Create a compact web system where owners and admins manage classes, users, and l
 - Attendance table/matrix.
 - Student cabinet.
 - Responsive layout for phone and desktop.
-- PostgreSQL-backed Vercel preview preparation.
+- Vercel Preview + PostgreSQL preparation.
 
 ## Non-Goals
 
@@ -65,7 +65,6 @@ Create a compact web system where owners and admins manage classes, users, and l
 
 ## Next Stage
 
-- Validate PostgreSQL behavior on a Vercel preview deployment.
-- Run a final security pass before client demo.
-- Confirm session invalidation behavior and lesson edit/delete handling.
+- Validate PostgreSQL behavior on a Vercel Preview deployment.
+- Run a mini security pass before the client demo.
 - Prepare a compact client demo of the implemented MVP flow.

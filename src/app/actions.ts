@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getDb, isDemoDatabase } from "@/db/client";
-import { classes, lessons, users } from "@/db/schema";
+import { attendance, classes, lessons, users } from "@/db/schema";
 import { getSessionSecret, requireRole } from "@/lib/auth";
 import { normalizeClassName } from "@/lib/classes";
 import { createDatabaseId } from "@/lib/database-id";
@@ -15,10 +15,12 @@ import {
   createDemoStudent,
   deleteDemoAdminUser,
   deleteDemoClass,
+  deleteDemoLesson,
   deleteDemoStudent,
   findDemoUserByLogin,
   getDemoAdminUsers,
   getDemoClassById,
+  updateDemoLesson,
   updateDemoStudentPassword,
 } from "@/lib/demo-store";
 import { createQrToken, normalizeLessonInput } from "@/lib/lessons";
@@ -128,7 +130,7 @@ export async function createStudentAction(formData: FormData): Promise<void> {
   try {
     user = normalizeCreateUserInput(
       {
-        role: String(formData.get("role") ?? "student"),
+        role: "student",
         name: String(formData.get("name") ?? ""),
         login: String(formData.get("login") ?? ""),
         password: String(formData.get("password") ?? ""),
@@ -198,6 +200,10 @@ export async function createStudentAction(formData: FormData): Promise<void> {
 export async function createAdminAction(formData: FormData): Promise<void> {
   const session = await requireRole("admin");
   let user: ReturnType<typeof normalizeCreateUserInput>;
+
+  if (session.role !== "owner") {
+    redirect("/admin/users?error=admin-fields");
+  }
 
   try {
     user = normalizeCreateUserInput(
@@ -437,4 +443,110 @@ export async function createLessonAction(formData: FormData): Promise<void> {
   revalidatePath("/admin");
   revalidatePath(`/admin/classes/${classId}`);
   redirect(`/admin/lessons/${createdLesson.id}`);
+}
+
+export async function updateLessonAction(formData: FormData): Promise<void> {
+  await requireRole("admin");
+  const lessonId = String(formData.get("lessonId") ?? "");
+  let lesson: ReturnType<typeof normalizeLessonInput>;
+
+  if (!lessonId) {
+    redirect("/admin/classes");
+  }
+
+  try {
+    lesson = normalizeLessonInput({
+      title: String(formData.get("title") ?? ""),
+      date: String(formData.get("date") ?? ""),
+      startTime: String(formData.get("startTime") ?? ""),
+      checkInMinutes: String(formData.get("checkInMinutes") ?? ""),
+    });
+  } catch {
+    redirect(`/admin/lessons/${lessonId}?error=lesson-fields`);
+  }
+
+  const updatedClassId = isDemoDatabase()
+    ? await updateDemoLesson(lessonId, lesson)
+    : await updateLessonInDatabase(lessonId, lesson);
+
+  if (!updatedClassId) {
+    redirect("/admin/classes");
+  }
+
+  revalidatePath("/admin");
+  revalidatePath(`/admin/classes/${updatedClassId}`);
+  revalidatePath(`/admin/lessons/${lessonId}`);
+  redirect(`/admin/lessons/${lessonId}`);
+}
+
+export async function deleteLessonAction(formData: FormData): Promise<void> {
+  await requireRole("admin");
+  const lessonId = String(formData.get("lessonId") ?? "");
+
+  if (!lessonId) {
+    redirect("/admin/classes");
+  }
+
+  const deletedClassId = isDemoDatabase()
+    ? await deleteDemoLesson(lessonId)
+    : await deleteLessonInDatabase(lessonId);
+
+  if (!deletedClassId) {
+    redirect("/admin/classes");
+  }
+
+  revalidatePath("/admin");
+  revalidatePath(`/admin/classes/${deletedClassId}`);
+  revalidatePath(`/admin/lessons/${lessonId}`);
+  redirect(`/admin/classes/${deletedClassId}`);
+}
+
+async function deleteLessonInDatabase(lessonId: string): Promise<string | null> {
+  const lesson = await getDb().query.lessons.findFirst({
+    columns: {
+      id: true,
+      classId: true,
+    },
+    where: eq(lessons.id, lessonId),
+  });
+
+  if (!lesson) {
+    return null;
+  }
+
+  await getDb().transaction(async (tx) => {
+    await tx.delete(attendance).where(eq(attendance.lessonId, lesson.id));
+    await tx.delete(lessons).where(eq(lessons.id, lesson.id));
+  });
+
+  return lesson.classId;
+}
+
+async function updateLessonInDatabase(
+  lessonId: string,
+  input: ReturnType<typeof normalizeLessonInput>,
+): Promise<string | null> {
+  const lesson = await getDb().query.lessons.findFirst({
+    columns: {
+      id: true,
+      classId: true,
+    },
+    where: eq(lessons.id, lessonId),
+  });
+
+  if (!lesson) {
+    return null;
+  }
+
+  await getDb()
+    .update(lessons)
+    .set({
+      title: input.title,
+      date: input.date,
+      startTime: input.startTime,
+      checkInMinutes: input.checkInMinutes,
+    })
+    .where(eq(lessons.id, lesson.id));
+
+  return lesson.classId;
 }

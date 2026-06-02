@@ -78,6 +78,13 @@ export async function findDemoUserByLogin(login: string) {
   return store.users.find((user) => user.login === login) ?? null;
 }
 
+export async function findDemoUserById(id: string) {
+  const store = await readStore();
+  const user = store.users.find((item) => item.id === id);
+
+  return user ? { id: user.id, name: user.name, role: user.role } : null;
+}
+
 export async function getDemoDashboardStats() {
   const store = await readStore();
 
@@ -420,6 +427,44 @@ export async function createDemoLesson(input: {
   store.lessons.push(lesson);
   await writeStore(store);
   return lesson;
+}
+
+export async function updateDemoLesson(
+  lessonId: string,
+  input: {
+    title: string;
+    date: string;
+    startTime: string;
+    checkInMinutes: number;
+  },
+) {
+  const store = await readStore();
+  const lesson = store.lessons.find((item) => item.id === lessonId);
+
+  if (!lesson) {
+    return null;
+  }
+
+  lesson.title = input.title;
+  lesson.date = input.date;
+  lesson.startTime = input.startTime;
+  lesson.checkInMinutes = input.checkInMinutes;
+  await writeStore(store);
+  return lesson.classId;
+}
+
+export async function deleteDemoLesson(lessonId: string) {
+  const store = await readStore();
+  const lesson = store.lessons.find((item) => item.id === lessonId);
+
+  if (!lesson) {
+    return null;
+  }
+
+  store.lessons = store.lessons.filter((item) => item.id !== lessonId);
+  store.attendance = store.attendance.filter((item) => item.lessonId !== lessonId);
+  await writeStore(store);
+  return lesson.classId;
 }
 
 export async function getDemoScanContext(qrToken: string, studentId: string) {

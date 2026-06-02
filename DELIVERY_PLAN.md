@@ -23,9 +23,9 @@
 1. Configure PostgreSQL for Vercel preview through `DATABASE_URL`.
 2. Configure required preview env vars: `NEXT_PUBLIC_APP_URL`, `SESSION_SECRET`, database URL, and owner seed credentials.
 3. Run preview smoke tests for owner, admin, student, QR check-in, duplicate attendance, and expiry behavior.
-4. Complete final security pass for auth, session handling, role checks, QR access, and production-only database behavior.
-5. Confirm or add session invalidation.
-6. Confirm or add lesson delete/edit behavior.
+4. Close session invalidation, lesson delete, and lesson edit before client handoff.
+5. Complete mini security pass for auth, session handling, role checks, QR access, and production-only database behavior.
+6. Prepare the client demo after Vercel Preview + PostgreSQL is verified.
 
 ## Client Demo
 
@@ -37,6 +37,7 @@ The client demo should show:
 - Lesson page shows the QR code and expiry.
 - Student can log in, scan the QR, and see attendance in the cabinet.
 - Admin can review the attendance matrix.
+- Demo should run from the verified Vercel Preview environment.
 
 ## Completion Rules
 

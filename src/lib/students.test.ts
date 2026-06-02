@@ -30,14 +30,14 @@ describe("student helpers", () => {
     ).toThrow("Student name is required");
   });
 
-  it("requires a password with at least six characters", () => {
+  it("requires a password with at least eight characters", () => {
     expect(() =>
       normalizeStudentInput({
         name: "Alice",
         login: "alice",
         password: "12345",
       }),
-    ).toThrow("Student password must be at least 6 characters");
+    ).toThrow("Student password must be at least 8 characters");
   });
 
   it("normalizes a new student password before changing it", () => {
@@ -46,7 +46,7 @@ describe("student helpers", () => {
 
   it("rejects a short new student password", () => {
     expect(() => normalizeStudentPassword("12345")).toThrow(
-      "Student password must be at least 6 characters",
+      "Student password must be at least 8 characters",
     );
   });
 

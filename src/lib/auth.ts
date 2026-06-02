@@ -1,13 +1,19 @@
 import "server-only";
 
+import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getDb, isDemoDatabase } from "@/db/client";
+import { users } from "@/db/schema";
+import { findDemoUserById } from "@/lib/demo-store";
 import {
   canAccessRole,
+  getAuthoritativeSession,
   getRoleHomePath,
   readSessionToken,
   sessionCookieName,
   type SessionPayload,
+  type SessionUserSnapshot,
   type UserRole,
 } from "./session";
 
@@ -28,11 +34,21 @@ export async function requireRole(role: UserRole): Promise<SessionPayload> {
     redirect("/login");
   }
 
-  if (!canAccessRole(role, session.role)) {
-    redirect(getRoleHomePath(session.role));
+  const authoritativeSession = getAuthoritativeSession(
+    session,
+    await findSessionUser(session.userId),
+  );
+
+  if (!authoritativeSession) {
+    await deleteSessionCookie();
+    redirect("/login");
   }
 
-  return session;
+  if (!canAccessRole(role, authoritativeSession.role)) {
+    redirect(getRoleHomePath(authoritativeSession.role));
+  }
+
+  return authoritativeSession;
 }
 
 export function getSessionSecret(): string {
@@ -43,4 +59,29 @@ export function getSessionSecret(): string {
   }
 
   return secret;
+}
+
+async function findSessionUser(userId: string): Promise<SessionUserSnapshot | null> {
+  if (isDemoDatabase()) {
+    return findDemoUserById(userId);
+  }
+
+  const user = await getDb().query.users.findFirst({
+    columns: {
+      id: true,
+      name: true,
+      role: true,
+    },
+    where: eq(users.id, userId),
+  });
+
+  return user ?? null;
+}
+
+async function deleteSessionCookie(): Promise<void> {
+  try {
+    (await cookies()).delete(sessionCookieName);
+  } catch {
+    // Server Components may be read-only for cookies; the redirect still blocks access.
+  }
 }

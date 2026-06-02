@@ -34,7 +34,7 @@ type ClassDetailPageProps = {
 };
 
 const studentErrorMessages: Record<string, string> = {
-  "student-fields": "Заполните имя, логин и пароль минимум из 6 символов.",
+  "student-fields": "Заполните имя, логин и пароль минимум из 8 символов.",
   "student-login": "Пользователь с таким логином уже существует.",
 };
 
@@ -123,7 +123,7 @@ export default async function ClassDetailPage({
               name="password"
               type="password"
               label="Пароль"
-              placeholder="Минимум 6 символов"
+              placeholder="Минимум 8 символов"
             />
             <Button type="submit" className="w-full lg:w-auto">
               Добавить

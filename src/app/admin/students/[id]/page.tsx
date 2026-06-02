@@ -32,7 +32,7 @@ type AdminStudentPageProps = {
 };
 
 const passwordErrorMessages: Record<string, string> = {
-  password: "Введите новый пароль минимум из 6 символов.",
+  password: "Введите новый пароль минимум из 8 символов.",
 };
 
 export default async function AdminStudentPage({
@@ -145,7 +145,7 @@ export default async function AdminStudentPage({
                 name="password"
                 type="password"
                 label="Новый пароль"
-                placeholder="Минимум 6 символов"
+                placeholder="Минимум 8 символов"
               />
               <Button type="submit" className="w-full sm:w-auto">
                 Сменить пароль

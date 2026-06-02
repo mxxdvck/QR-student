@@ -45,10 +45,8 @@
 
 ## Next Risks Before Client Demo
 
-- Verify PostgreSQL behavior on a Vercel preview deployment.
-- Add or confirm session invalidation.
-- Add or confirm lesson delete/edit behavior.
-- Run a final security pass before the client demo.
+- Before the client demo, verify PostgreSQL behavior on a Vercel Preview deployment.
+- Still close session invalidation, delete lesson, edit lesson, and a mini security pass.
 
 ## Verification Habit
 

@@ -20,6 +20,10 @@ Add these variables in Vercel Project Settings -> Environment Variables:
 
 Do not add `DEMO_DATABASE` to Vercel.
 
+Environment variable changes in Vercel require a new deployment before the
+running Preview uses the updated values. After adding or changing Preview env
+vars, redeploy the Preview deployment.
+
 ## Database Setup
 
 Run these commands locally from the project folder with production env values
@@ -41,6 +45,9 @@ seed owner is present.
 The seed script requires `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`; it does
 not hardcode a production password.
 
+Preview must be checked against PostgreSQL through `DATABASE_URL`, not the local
+demo store. Keep `DEMO_DATABASE` unset in Vercel Preview and Production.
+
 ## Deploy Check
 
 Before creating a test deploy:
@@ -54,6 +61,11 @@ npm run build
 
 Then deploy the Vercel project. Suggested project name:
 `qr-attendance-system`.
+
+Do not show the Preview to the client until manual QA has passed on the Vercel
+Preview URL with PostgreSQL data. At minimum, check owner login, admin creation,
+class/student/lesson creation, QR check-in, duplicate prevention, attendance
+table, student cabinet, lesson edit/delete, and logout/login behavior.
 
 ## Local Demo Mode
 
