@@ -1,10 +1,10 @@
-# QR Student Attendance
+# QR-учет посещаемости
 
-QR Student Attendance is a compact web system for student attendance by QR code.
-Owners and admins manage classes, students, and lessons. Students open a lesson
-QR link from a phone and mark attendance during the allowed time window.
+QR-учет посещаемости - это компактная система для отметки студентов по QR-коду.
 
-## Local Run
+Владелец и администраторы создают классы, студентов и занятия. Студенты входят на сайт, сканируют QR-код занятия и отмечают присутствие в разрешенное время.
+
+## Быстрый запуск
 
 ```sh
 npm install
@@ -12,11 +12,11 @@ npm run demo:db
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+После запуска откройте `http://localhost:3000`.
 
-## Production Setup
+## Подготовка к рабочему запуску
 
-Production uses PostgreSQL through `DATABASE_URL`.
+Система использует внешнюю PostgreSQL-базу через `DATABASE_URL`.
 
 ```sh
 npm install
@@ -27,13 +27,13 @@ npm run production:db-check
 npm run build
 ```
 
-To update an existing owner account, set the required env values and run:
+Если нужно заменить доступ владельца, задайте новые значения в переменных окружения и выполните:
 
 ```sh
 npm run owner:update-credentials
 ```
 
-## Checks
+## Проверка
 
 ```sh
 npm test
@@ -41,9 +41,9 @@ npm run lint
 npm run build
 ```
 
-## Documentation
+## Документы
 
-- `USER_GUIDE.md`: full user guide in Russian.
-- `DEPLOYMENT.md`: Vercel and PostgreSQL deployment steps.
-- `HANDOVER.md`: client handover guide and operating notes.
-- `.env.example`: environment variable example.
+- `USER_GUIDE.md` - полная инструкция для обычного пользователя.
+- `HANDOVER.md` - краткая передача проекта заказчику.
+- `DEPLOYMENT.md` - инструкция по размещению и настройке.
+- `.env.example` - пример нужных переменных окружения.

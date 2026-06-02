@@ -1,97 +1,89 @@
-# Client Handover
+# Передача проекта
 
-Full user instructions for non-technical users are available in `USER_GUIDE.md`.
+Полная инструкция для обычного пользователя находится в `USER_GUIDE.md`.
 
-## What Is Implemented
+## Что реализовано
 
-The first version includes owner/admin/student login, class management, student
-management, lesson creation, lesson QR codes, time-limited QR check-in,
-duplicate attendance protection, an admin attendance table, and a student
-cabinet with personal attendance history.
+Первая версия системы включает:
 
-## How To Sign In
+- вход владельца, администратора и студента;
+- управление классами;
+- создание администраторов и студентов;
+- создание занятий;
+- QR-код для занятия;
+- отметку посещаемости только в разрешенное время;
+- защиту от повторной отметки на одно занятие;
+- таблицу посещаемости для администратора;
+- кабинет студента с посещениями и пропусками.
 
-- Owner: use the owner login and password configured during setup.
-- Admin: sign in with credentials created by the owner.
-- Student: sign in with credentials created by the owner or admin.
+## Как войти
 
-Production credentials must be stored only in environment variables or in the
-database, not in repository files.
+- Владелец входит по логину и паролю, заданным при настройке.
+- Администратор входит по логину и паролю, которые выдал владелец.
+- Студент входит по логину и паролю, которые выдал владелец или администратор.
 
-## How To Create A Class
+Рабочие логины и пароли нельзя хранить в документах проекта или передавать в открытом виде.
 
-1. Sign in as owner or admin.
-2. Open the admin area.
-3. Go to the classes section.
-4. Create a new class with the required name.
-5. Open the class page to manage students, lessons, and attendance.
+## Как создать класс
 
-## How To Add A Student
+1. Войдите как владелец или администратор.
+2. Откройте административную часть.
+3. Перейдите в раздел классов.
+4. Создайте новый класс с понятным названием.
+5. Откройте страницу класса для добавления студентов, занятий и просмотра посещаемости.
 
-1. Open the required class page in the admin area.
-2. Add a student from the class user management form.
-3. Set the student's name, login, and password.
-4. Give the login and password to the student.
+## Как добавить студента
 
-Owners can create admins and students. Admins can create students for their
-assigned class flow.
+1. Откройте нужный класс.
+2. Добавьте студента через форму на странице класса.
+3. Укажите имя, логин и пароль.
+4. Передайте студенту логин и пароль безопасным способом.
 
-## How To Create A Lesson And QR
+Владелец может создавать администраторов и студентов. Администратор может создавать студентов для учебного процесса.
 
-1. Open the required class page.
-2. Create a lesson with the lesson title, date, start time, and check-in window.
-3. Open the lesson page.
-4. Show or share the generated QR code.
-5. Students sign in and open the QR link from their phones to mark attendance.
+## Как создать занятие и QR
 
-## How The Check-In Window Works
+1. Откройте нужный класс.
+2. Создайте занятие: укажите название, дату, время начала и окно отметки.
+3. Откройте страницу занятия.
+4. Покажите студентам QR-код.
+5. Студенты входят на сайт и открывают QR-код с телефона.
 
-Each lesson has a limited attendance window. A student can mark attendance only
-while the QR link is valid for that lesson. After the window closes, late marks
-are rejected. A student can be marked present only once for the same lesson.
-Missing marks become absences in the attendance view after the lesson window is
-over.
+## Как работает окно отметки
 
-## How To Reset Or Change Owner Credentials
+У каждого занятия есть ограниченное время для отметки. Студент может отметиться только в это окно. После окончания времени поздние отметки не принимаются.
 
-Set the new owner credentials in the shell:
+Для одного студента и одного занятия сохраняется только одна отметка. Если студент не отметился до закрытия окна, в таблице появится пропуск.
 
-```sh
-SEED_OWNER_LOGIN=<new-login>
-SEED_OWNER_PASSWORD=<new-password>
-```
+## Как заменить доступ владельца
 
-Then run:
+Если нужно заменить логин или пароль владельца, технический специалист задает новые значения в настройках запуска и выполняет команду:
 
 ```sh
 npm run owner:update-credentials
 ```
 
-If the database has more than one owner, also set:
+Команда меняет доступ владельца и не выводит пароль на экран. Реальные пароли не нужно записывать в документы.
 
-```sh
-OWNER_CURRENT_LOGIN=<current-owner-login>
-```
+## Что нужно настроить для размещения
 
-The command updates credentials only. It does not print the password.
+Для рабочего размещения нужны:
 
-## Required Vercel Environment Variables
+- адрес приложения;
+- секрет для пользовательских сессий;
+- строка подключения к PostgreSQL;
+- начальный логин владельца;
+- начальный пароль владельца.
 
-- `NEXT_PUBLIC_APP_URL`: the deployed app URL.
-- `SESSION_SECRET`: long random secret for signed auth cookies.
-- `DATABASE_URL`: PostgreSQL connection string, usually with `sslmode=require`.
-- `SEED_OWNER_LOGIN`: initial owner login for seeding.
-- `SEED_OWNER_PASSWORD`: initial owner password for seeding.
+Подробные шаги описаны в `DEPLOYMENT.md`.
 
-Do not set `DEMO_DATABASE` in Vercel.
+## Что не входит в первую версию
 
-## Not Included In The First Version
-
-- Excel export.
-- Geolocation checks.
-- Wi-Fi or IP checks.
-- Device binding.
-- Student import.
-- Password recovery.
-- Separate backend service.
-- Complex roles or multi-admin workflows beyond the MVP.
+- выгрузка в Excel;
+- геолокация;
+- проверка Wi-Fi или IP-адреса;
+- привязка к устройству;
+- импорт студентов;
+- восстановление пароля по email;
+- отдельный сервер;
+- сложные роли и расширенные сценарии управления.

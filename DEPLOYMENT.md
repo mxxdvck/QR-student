@@ -1,32 +1,26 @@
-# Deployment
+# Размещение проекта
 
-## Production Target
+## Рабочая среда
 
-Deploy the app to Vercel with an external PostgreSQL database from Supabase or
-Neon through `DATABASE_URL`.
+Проект рассчитан на размещение в Vercel и работу с внешней PostgreSQL-базой. Базу можно взять в Supabase, Neon или другом сервисе, который выдает строку подключения через `DATABASE_URL`.
 
-Production must not use the local demo store. `DEMO_DATABASE=1` is ignored when
-`NODE_ENV=production`, and it should not be added to Vercel.
+В рабочей среде нельзя использовать локальный демо-режим. Переменную `DEMO_DATABASE` не нужно добавлять в Vercel.
 
-## Vercel Environment Variables
+## Переменные окружения в Vercel
 
-Add these variables in Vercel Project Settings -> Environment Variables:
+В настройках проекта Vercel добавьте переменные:
 
-- `NEXT_PUBLIC_APP_URL`: the Vercel app URL, for example `https://qr-attendance-system.vercel.app`.
-- `SESSION_SECRET`: long random secret for signed auth cookies.
-- `DATABASE_URL`: PostgreSQL connection string from Supabase or Neon, usually with `sslmode=require`.
-- `SEED_OWNER_LOGIN`: initial owner login.
-- `SEED_OWNER_PASSWORD`: initial owner password.
+- `NEXT_PUBLIC_APP_URL` - адрес размещенного сайта.
+- `SESSION_SECRET` - длинный случайный секрет для пользовательских сессий.
+- `DATABASE_URL` - строка подключения к PostgreSQL, обычно с `sslmode=require`.
+- `SEED_OWNER_LOGIN` - начальный логин владельца.
+- `SEED_OWNER_PASSWORD` - начальный пароль владельца.
 
-Do not add `DEMO_DATABASE` to Vercel.
+После изменения переменных окружения нужно запустить новый деплой, чтобы приложение получило новые значения.
 
-Environment variable changes in Vercel require a new deployment before the
-running app uses the updated values.
+## Настройка базы данных
 
-## Database Setup
-
-Run these commands locally from the project folder with production env values
-available in the shell:
+Команды выполняются локально из папки проекта, когда рабочие переменные окружения уже доступны в терминале:
 
 ```sh
 npm install
@@ -36,35 +30,30 @@ npm run db:seed
 npm run production:db-check
 ```
 
-`npm run db:push` applies the Drizzle schema to the PostgreSQL database.
-`npm run db:seed` creates one owner user if the login does not exist yet.
-`npm run production:db-check` verifies that the required tables exist and the
-seed owner is present.
+Что делают команды:
 
-The seed script requires `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`; it does
-not hardcode a production password.
+- `npm run production:check` проверяет, что рабочие настройки заполнены.
+- `npm run db:push` применяет структуру таблиц к PostgreSQL-базе.
+- `npm run db:seed` создает владельца, если его еще нет.
+- `npm run production:db-check` проверяет таблицы и наличие владельца.
 
-Set the owner login and password through env values before running
-`npm run db:seed`. Do not commit real logins or passwords. For Vercel Preview
-and Production, use a real login and a long generated password.
+Команда создания владельца требует `SEED_OWNER_LOGIN` и `SEED_OWNER_PASSWORD`. Реальные логины и пароли нельзя коммитить или хранить в открытых документах.
 
-If the owner already exists and credentials need to change, set
-`SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`, then run:
+## Замена доступа владельца
+
+Если владелец уже создан и нужно изменить логин или пароль, задайте новые значения `SEED_OWNER_LOGIN` и `SEED_OWNER_PASSWORD`, затем выполните:
 
 ```sh
 npm run owner:update-credentials
 ```
 
-When there is more than one owner, also set `OWNER_CURRENT_LOGIN` so the script
-updates the intended existing owner. The script updates credentials only; it
-does not create a new owner and does not print the password.
+Если в базе больше одного владельца, дополнительно укажите `OWNER_CURRENT_LOGIN`, чтобы обновить нужную учетную запись.
 
-Vercel deployments must use PostgreSQL through `DATABASE_URL`, not the local demo
-store. Keep `DEMO_DATABASE` unset in Vercel Preview and Production.
+Команда только обновляет доступ. Она не создает нового владельца и не выводит пароль на экран.
 
-## Deploy Check
+## Проверка перед размещением
 
-Before deployment:
+Перед рабочим запуском выполните:
 
 ```sh
 npm run production:check
@@ -73,16 +62,24 @@ npm run test
 npm run build
 ```
 
-Then deploy the Vercel project.
+После размещения проверьте основной сценарий на рабочем адресе:
 
-After deployment, verify the main flow on the Vercel URL with PostgreSQL data:
-owner login, admin creation, class/student/lesson creation, QR check-in,
-duplicate prevention, attendance table, student cabinet, lesson edit/delete, and
-logout/login behavior.
+1. Вход владельца.
+2. Создание администратора.
+3. Создание класса.
+4. Добавление студента.
+5. Создание занятия.
+6. Открытие QR-кода.
+7. Отметка студента.
+8. Защита от повторной отметки.
+9. Таблица посещаемости.
+10. Кабинет студента.
+11. Редактирование и удаление занятия.
+12. Выход и повторный вход.
 
-## Local Demo Mode
+## Локальная проверка
 
-For local review, `.env.local` may contain:
+Для локальной проверки можно использовать `.env.local` с тестовыми значениями:
 
 ```sh
 DEMO_DATABASE=1
@@ -92,7 +89,7 @@ SEED_OWNER_LOGIN=admin
 SEED_OWNER_PASSWORD=admin123
 ```
 
-Then run:
+Затем выполните:
 
 ```sh
 npm run demo:db
