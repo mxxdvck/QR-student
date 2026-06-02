@@ -1,4 +1,4 @@
-# Deployment Notes
+# Deployment
 
 ## Production Target
 
@@ -21,8 +21,7 @@ Add these variables in Vercel Project Settings -> Environment Variables:
 Do not add `DEMO_DATABASE` to Vercel.
 
 Environment variable changes in Vercel require a new deployment before the
-running Preview uses the updated values. After adding or changing Preview env
-vars, redeploy the Preview deployment.
+running app uses the updated values.
 
 ## Database Setup
 
@@ -60,12 +59,12 @@ When there is more than one owner, also set `OWNER_CURRENT_LOGIN` so the script
 updates the intended existing owner. The script updates credentials only; it
 does not create a new owner and does not print the password.
 
-Preview must be checked against PostgreSQL through `DATABASE_URL`, not the local
-demo store. Keep `DEMO_DATABASE` unset in Vercel Preview and Production.
+Vercel deployments must use PostgreSQL through `DATABASE_URL`, not the local demo
+store. Keep `DEMO_DATABASE` unset in Vercel Preview and Production.
 
 ## Deploy Check
 
-Before creating a test deploy:
+Before deployment:
 
 ```sh
 npm run production:check
@@ -74,17 +73,16 @@ npm run test
 npm run build
 ```
 
-Then deploy the Vercel project. Suggested project name:
-`qr-attendance-system`.
+Then deploy the Vercel project.
 
-Do not show the Preview to the client until manual QA has passed on the Vercel
-Preview URL with PostgreSQL data. At minimum, check owner login, admin creation,
-class/student/lesson creation, QR check-in, duplicate prevention, attendance
-table, student cabinet, lesson edit/delete, and logout/login behavior.
+After deployment, verify the main flow on the Vercel URL with PostgreSQL data:
+owner login, admin creation, class/student/lesson creation, QR check-in,
+duplicate prevention, attendance table, student cabinet, lesson edit/delete, and
+logout/login behavior.
 
 ## Local Demo Mode
 
-For local review only, `.env.local` may contain:
+For local review, `.env.local` may contain:
 
 ```sh
 DEMO_DATABASE=1

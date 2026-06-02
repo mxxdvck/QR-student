@@ -24,3 +24,5 @@ design-reference/
 design-reference/**/*.zip
 design-reference/**/node_modules/
 design-reference/**/.next/
+
+.vercel
