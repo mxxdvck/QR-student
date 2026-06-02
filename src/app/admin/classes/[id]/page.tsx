@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { createLessonAction, createStudentAction, deleteStudentAction } from "@/app/actions";
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -13,6 +12,8 @@ import {
   GeneratedPasswordField,
   Input,
   PageHeader,
+  PendingLink,
+  PendingSubmitButton,
   StatCard,
   TableWrapper,
 } from "@/components/ui";
@@ -120,9 +121,9 @@ export default async function ClassDetailPage({
             <Input id="student-name" name="name" label="Имя" placeholder="Анна Петрова" />
             <Input id="student-login" name="login" label="Логин" placeholder="anna.petrova" />
             <GeneratedPasswordField id="student-password" />
-            <Button type="submit" className="w-full lg:w-auto">
+            <PendingSubmitButton pendingText="Добавляем..." className="w-full lg:w-auto">
               Добавить
-            </Button>
+            </PendingSubmitButton>
           </form>
           <FormError message={studentError} className="mt-4" />
         </CardContent>
@@ -167,12 +168,12 @@ export default async function ClassDetailPage({
                     </td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-3">
-                        <Link
+                        <PendingLink
                           href={`/admin/students/${student.id}`}
                           className="font-medium text-zinc-700 transition hover:text-zinc-950"
                         >
                           Карточка
-                        </Link>
+                        </PendingLink>
                       <form action={deleteStudentAction}>
                         <input type="hidden" name="classId" value={classItem.id} />
                         <input type="hidden" name="studentId" value={student.id} />
@@ -222,9 +223,9 @@ export default async function ClassDetailPage({
               defaultValue={15}
               label="Окно, мин"
             />
-            <Button type="submit" className="w-full lg:w-auto">
+            <PendingSubmitButton pendingText="Создаём..." className="w-full lg:w-auto">
               Создать
-            </Button>
+            </PendingSubmitButton>
           </form>
           <FormError message={lessonError} className="mt-4" />
         </CardContent>
@@ -270,12 +271,12 @@ export default async function ClassDetailPage({
                       {lesson.checkInMinutes} мин
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Link
+                      <PendingLink
                         href={`/admin/lessons/${lesson.id}`}
                         className="font-medium text-zinc-700 transition hover:text-zinc-950"
                       >
                         Открыть
-                      </Link>
+                      </PendingLink>
                     </td>
                   </tr>
                 ))}

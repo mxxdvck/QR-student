@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { createClassAction, deleteClassAction } from "@/app/actions";
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -10,6 +8,8 @@ import {
   EmptyState,
   Input,
   PageHeader,
+  PendingLink,
+  PendingSubmitButton,
   TableWrapper,
 } from "@/components/ui";
 import { getClassesWithStats } from "@/lib/admin-data";
@@ -52,9 +52,9 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
               error={errorMessage}
               required
             />
-            <Button type="submit" className="h-11">
+            <PendingSubmitButton pendingText="Создаём..." className="h-11">
               Создать класс
-            </Button>
+            </PendingSubmitButton>
           </form>
         </CardContent>
       </Card>
@@ -94,12 +94,12 @@ export default async function ClassesPage({ searchParams }: ClassesPageProps) {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-3">
-                      <Link
+                      <PendingLink
                         href={`/admin/classes/${classItem.id}`}
                         className="text-sm font-medium text-zinc-950 underline-offset-4 hover:underline"
                       >
                         Открыть
-                      </Link>
+                      </PendingLink>
                       <form action={deleteClassAction}>
                         <input type="hidden" name="classId" value={classItem.id} />
                         <ConfirmSubmitButton confirmText="Удалить класс? Вместе с ним удалятся студенты, занятия и отметки посещаемости.">

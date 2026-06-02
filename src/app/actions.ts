@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -106,18 +106,39 @@ export async function createClassAction(formData: FormData): Promise<void> {
 
   const createdClass = isDemoDatabase()
     ? await createDemoClass(name)
-    : (
-        await getDb()
-          .insert(classes)
-          .values({ id: createDatabaseId(), name })
-          .returning({
-            id: classes.id,
-          })
-      )[0];
+    : await createClassInDatabase(name);
 
   revalidatePath("/admin");
   revalidatePath("/admin/classes");
   redirect(`/admin/classes/${createdClass.id}`);
+}
+
+async function createClassInDatabase(name: string): Promise<{ id: string }> {
+  const db = getDb();
+  const lookupName = name.toLocaleLowerCase("ru-RU");
+
+  return db.transaction(async (tx) => {
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${lookupName})::bigint)`);
+
+    const existingClass = await tx
+      .select({ id: classes.id })
+      .from(classes)
+      .where(sql`lower(trim(${classes.name})) = ${lookupName}`)
+      .limit(1);
+
+    if (existingClass[0]) {
+      return existingClass[0];
+    }
+
+    return (
+      await tx
+      .insert(classes)
+      .values({ id: createDatabaseId(), name })
+      .returning({
+        id: classes.id,
+      })
+    )[0];
+  });
 }
 
 export async function createStudentAction(formData: FormData): Promise<void> {

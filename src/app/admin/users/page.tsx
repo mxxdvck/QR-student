@@ -1,7 +1,6 @@
 import { createAdminAction, deleteAdminUserAction } from "@/app/actions";
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -11,6 +10,7 @@ import {
   GeneratedPasswordField,
   Input,
   PageHeader,
+  PendingSubmitButton,
   TableWrapper,
 } from "@/components/ui";
 import { requireRole } from "@/lib/auth";
@@ -60,9 +60,9 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
               <Input id="admin-name" name="name" label="Имя" placeholder="Иван Иванов" />
               <Input id="admin-login" name="login" label="Логин" placeholder="admin.login" />
               <GeneratedPasswordField id="admin-password" />
-              <Button type="submit" className="w-full lg:w-auto">
+              <PendingSubmitButton pendingText="Создаём..." className="w-full lg:w-auto">
                 Создать
-              </Button>
+              </PendingSubmitButton>
             </form>
             <FormError message={errorMessage} className="mt-4" />
           </CardContent>

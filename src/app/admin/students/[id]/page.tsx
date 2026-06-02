@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { updateStudentPasswordAction } from "@/app/actions";
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -11,6 +10,7 @@ import {
   FormError,
   GeneratedPasswordField,
   PageHeader,
+  PendingSubmitButton,
   StatCard,
 } from "@/components/ui";
 import { getAdminStudentDetail } from "@/lib/admin-data";
@@ -141,9 +141,9 @@ export default async function AdminStudentPage({
             <form action={updateStudentPasswordAction} className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
               <input type="hidden" name="studentId" value={detail.student.id} />
               <GeneratedPasswordField id="student-new-password" />
-              <Button type="submit" className="w-full sm:w-auto">
+              <PendingSubmitButton pendingText="Сохраняем..." className="w-full sm:w-auto">
                 Сменить пароль
-              </Button>
+              </PendingSubmitButton>
             </form>
             <FormError message={passwordError} />
           </CardContent>

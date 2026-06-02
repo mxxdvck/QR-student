@@ -8,6 +8,8 @@ export { GeneratedPasswordField } from "./generated-password-field";
 export { Input } from "./input";
 export { LoadingState } from "./loading-state";
 export { PageHeader } from "./page-header";
+export { PendingLink } from "./pending-link";
+export { PendingSubmitButton } from "./pending-submit-button";
 export { QrCard } from "./qr-card";
 export { Select } from "./select";
 export { StatCard } from "./stat-card";

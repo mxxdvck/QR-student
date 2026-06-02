@@ -2,7 +2,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { deleteLessonAction, updateLessonAction } from "@/app/actions";
-import { Badge, ConfirmSubmitButton, PageHeader, QrCard } from "@/components/ui";
+import { Badge, ConfirmSubmitButton, PageHeader, PendingSubmitButton, QrCard } from "@/components/ui";
 import { getLessonById } from "@/lib/admin-data";
 import {
   buildScanUrl,
@@ -126,12 +126,12 @@ export default async function LessonPage({ params, searchParams }: LessonPagePro
             min={1}
             step={1}
           />
-          <button
-            type="submit"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-zinc-950 px-4 text-sm font-medium text-white transition hover:bg-zinc-800"
+          <PendingSubmitButton
+            pendingText="Сохраняем..."
+            className="border-transparent bg-zinc-950 text-white hover:border-transparent hover:bg-zinc-800"
           >
             Сохранить
-          </button>
+          </PendingSubmitButton>
         </form>
         {query.error === "lesson-fields" ? (
           <p className="mt-3 text-sm font-medium text-red-600">
