@@ -514,6 +514,56 @@ export async function createDemoAttendanceIfMissing(lessonId: string, studentId:
   return attendance;
 }
 
+export async function setDemoManualAttendance(input: {
+  classId: string;
+  lessonId: string;
+  mode: "present" | "absent";
+  studentId: string;
+}) {
+  const store = await readStore();
+  const lesson = store.lessons.find(
+    (item) => item.id === input.lessonId && item.classId === input.classId,
+  );
+  const student = store.users.find(
+    (user) =>
+      user.id === input.studentId &&
+      user.role === "student" &&
+      user.classId === input.classId,
+  );
+
+  if (!lesson || !student) {
+    return false;
+  }
+
+  if (input.mode === "absent") {
+    store.attendance = store.attendance.filter(
+      (item) => !(item.lessonId === lesson.id && item.studentId === student.id),
+    );
+    await writeStore(store);
+    return true;
+  }
+
+  const exists = store.attendance.some(
+    (item) => item.lessonId === lesson.id && item.studentId === student.id,
+  );
+
+  if (!exists) {
+    const now = new Date().toISOString();
+
+    store.attendance.push({
+      id: createDatabaseId(),
+      lessonId: lesson.id,
+      studentId: student.id,
+      status: "present",
+      scannedAt: now,
+      createdAt: now,
+    });
+  }
+
+  await writeStore(store);
+  return true;
+}
+
 async function readStore(): Promise<DemoStore> {
   try {
     const raw = await readFile(storePath, "utf8");

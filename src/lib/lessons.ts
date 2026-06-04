@@ -23,6 +23,7 @@ type LessonWindow = {
 
 export type LessonCheckInStatus = "not-started" | "open" | "closed";
 export type AttendanceCellStatus = "present" | "absent" | "pending";
+export type ManualAttendanceMode = "present" | "absent";
 
 export function normalizeLessonInput(input: LessonInput): NormalizedLessonInput {
   const title = input.title.trim().replace(/\s+/g, " ");
@@ -111,6 +112,14 @@ export function summarizeAttendanceStatuses(statuses: AttendanceCellStatus[]) {
     },
     { present: 0, absent: 0 },
   );
+}
+
+export function normalizeManualAttendanceMode(value: string): ManualAttendanceMode {
+  if (value === "present" || value === "absent") {
+    return value;
+  }
+
+  throw new Error("Manual attendance mode is invalid");
 }
 
 function isValidDateInput(value: string): boolean {

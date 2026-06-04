@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { createLessonAction, createStudentAction, deleteStudentAction } from "@/app/actions";
+import {
+  createLessonAction,
+  createStudentAction,
+  deleteStudentAction,
+  updateManualAttendanceAction,
+} from "@/app/actions";
 import {
   Badge,
   Card,
@@ -341,11 +346,35 @@ export default async function ClassDetailPage({
                       <p className="font-medium text-zinc-950">{student.name}</p>
                       <p className="text-xs text-zinc-500">{student.login}</p>
                     </td>
-                    {student.cells.map((cell) => (
-                      <td key={cell.lessonId} className="whitespace-nowrap px-3 py-3">
-                        <AttendanceStatusBadge status={cell.status} />
-                      </td>
-                    ))}
+                    {student.cells.map((cell) => {
+                      const mode = cell.status === "present" ? "absent" : "present";
+
+                      return (
+                        <td key={cell.lessonId} className="whitespace-nowrap px-3 py-3">
+                          <div className="flex flex-col items-start gap-2">
+                            <AttendanceStatusBadge status={cell.status} />
+                            <form action={updateManualAttendanceAction}>
+                              <input type="hidden" name="classId" value={classItem.id} />
+                              <input type="hidden" name="lessonId" value={cell.lessonId} />
+                              <input type="hidden" name="studentId" value={student.id} />
+                              <input type="hidden" name="mode" value={mode} />
+                              <PendingSubmitButton
+                                pendingText={mode === "present" ? "Ставим..." : "Снимаем..."}
+                                variant={mode === "present" ? "secondary" : "ghost"}
+                                className="h-8 px-2 text-xs"
+                                aria-label={
+                                  mode === "present"
+                                    ? `Поставить присутствие для ${student.name}`
+                                    : `Снять присутствие для ${student.name}`
+                                }
+                              >
+                                {mode === "present" ? "Поставить" : "Снять"}
+                              </PendingSubmitButton>
+                            </form>
+                          </div>
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>

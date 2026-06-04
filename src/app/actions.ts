@@ -20,10 +20,16 @@ import {
   findDemoUserByLogin,
   getDemoAdminUsers,
   getDemoClassById,
+  setDemoManualAttendance,
   updateDemoLesson,
   updateDemoStudentPassword,
 } from "@/lib/demo-store";
-import { createQrToken, normalizeLessonInput } from "@/lib/lessons";
+import {
+  createQrToken,
+  normalizeLessonInput,
+  normalizeManualAttendanceMode,
+  type ManualAttendanceMode,
+} from "@/lib/lessons";
 import { createPasswordHash, verifyPassword } from "@/lib/password";
 import {
   createSessionToken,
@@ -391,6 +397,41 @@ export async function updateStudentPasswordAction(formData: FormData): Promise<v
   redirect(`/admin/students/${studentId}?password=updated`);
 }
 
+export async function updateManualAttendanceAction(formData: FormData): Promise<void> {
+  await requireRole("admin");
+
+  const classId = String(formData.get("classId") ?? "");
+  const lessonId = String(formData.get("lessonId") ?? "");
+  const studentId = String(formData.get("studentId") ?? "");
+  let mode: ManualAttendanceMode;
+
+  try {
+    mode = normalizeManualAttendanceMode(String(formData.get("mode") ?? ""));
+  } catch {
+    if (classId) {
+      redirect(`/admin/classes/${classId}`);
+    }
+
+    redirect("/admin/classes");
+  }
+
+  if (!classId || !lessonId || !studentId) {
+    redirect(classId ? `/admin/classes/${classId}` : "/admin/classes");
+  }
+
+  const updated = isDemoDatabase()
+    ? await setDemoManualAttendance({ classId, lessonId, mode, studentId })
+    : await updateManualAttendanceInDatabase({ classId, lessonId, mode, studentId });
+
+  if (!updated) {
+    redirect(`/admin/classes/${classId}`);
+  }
+
+  revalidatePath("/admin");
+  revalidatePath(`/admin/classes/${classId}`);
+  revalidatePath(`/admin/students/${studentId}`);
+}
+
 async function updateStudentPasswordInDatabase(studentId: string, password: string) {
   const student = await getDb().query.users.findFirst({
     columns: {
@@ -410,6 +451,63 @@ async function updateStudentPasswordInDatabase(studentId: string, password: stri
     .where(and(eq(users.id, studentId), eq(users.role, "student")));
 
   return student;
+}
+
+async function updateManualAttendanceInDatabase(input: {
+  classId: string;
+  lessonId: string;
+  mode: ManualAttendanceMode;
+  studentId: string;
+}): Promise<boolean> {
+  const db = getDb();
+  const targetRows = await db
+    .select({
+      lessonId: lessons.id,
+      studentId: users.id,
+    })
+    .from(lessons)
+    .innerJoin(
+      users,
+      and(
+        eq(users.id, input.studentId),
+        eq(users.role, "student"),
+        eq(users.classId, lessons.classId),
+      ),
+    )
+    .where(and(eq(lessons.id, input.lessonId), eq(lessons.classId, input.classId)))
+    .limit(1);
+  const target = targetRows[0];
+
+  if (!target) {
+    return false;
+  }
+
+  if (input.mode === "absent") {
+    await db
+      .delete(attendance)
+      .where(
+        and(
+          eq(attendance.lessonId, target.lessonId),
+          eq(attendance.studentId, target.studentId),
+        ),
+      );
+    return true;
+  }
+
+  await db
+    .insert(attendance)
+    .values({
+      id: createDatabaseId(),
+      lessonId: target.lessonId,
+      studentId: target.studentId,
+      status: "present",
+      scannedAt: new Date(),
+    })
+    .onConflictDoNothing({
+      target: [attendance.lessonId, attendance.studentId],
+    });
+
+  return true;
 }
 
 export async function createLessonAction(formData: FormData): Promise<void> {

@@ -4,6 +4,7 @@ import {
   createQrToken,
   getAttendanceCellStatus,
   getLessonCheckInStatus,
+  normalizeManualAttendanceMode,
   normalizeLessonInput,
   summarizeAttendanceStatuses,
 } from "./lessons";
@@ -143,5 +144,13 @@ describe("lesson helpers", () => {
       present: 2,
       absent: 1,
     });
+  });
+
+  it("normalizes manual attendance modes", () => {
+    expect(normalizeManualAttendanceMode("present")).toBe("present");
+    expect(normalizeManualAttendanceMode("absent")).toBe("absent");
+    expect(() => normalizeManualAttendanceMode("late")).toThrow(
+      "Manual attendance mode is invalid",
+    );
   });
 });
