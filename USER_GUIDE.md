@@ -1,250 +1,250 @@
-# Инструкция пользователя
+# User Guide
 
-## 1. Что это за система
+This guide explains the main QR Student workflows for owners, admins, and students. It is general project documentation for the public OSS repository and does not contain real credentials or private deployment data.
 
-Это сайт для учета посещаемости студентов по QR-коду.
+## 1. What The System Does
 
-Система помогает быстро создать занятие, показать студентам QR-код и увидеть, кто отметился на занятии.
+QR Student is a small QR-based attendance app for education workflows.
 
-Основные действия:
+The basic flow is:
 
-- владелец создает администраторов;
-- администратор создает классы, студентов и занятия;
-- студент входит на сайт, сканирует QR-код и отмечается;
-- владелец или администратор смотрит таблицу посещаемости.
+- an owner creates admins;
+- an owner or admin creates classes, students, and lessons;
+- a student signs in, scans a lesson QR code, and marks attendance;
+- an owner or admin reviews the attendance table.
 
-## 2. Кто пользуется системой
+## 2. Roles
 
-**Владелец** управляет доступом администраторов и может работать с учебными данными.
+**Owner** manages admin access and can work with education data.
 
-**Администратор** создает классы, добавляет студентов, создает занятия, показывает QR-код и смотрит посещаемость.
+**Admin** creates classes, adds students, creates lessons, shows QR codes, and reviews attendance.
 
-**Студент** входит на сайт, отмечается по QR-коду и смотрит свои посещения и пропуски.
+**Student** signs in, marks attendance through a QR code, and reviews their attendance and absences.
 
-## 3. Как войти на сайт
+## 3. Sign In
 
-1. Откройте сайт в браузере.
-2. Введите логин.
-3. Введите пароль.
-4. Нажмите кнопку входа.
+1. Open the app in a browser.
+2. Enter the login.
+3. Enter the password.
+4. Submit the sign-in form.
 
-После входа владелец и администратор попадают в административную часть. Студент попадает в свой кабинет.
+Owners and admins enter the admin area. Students enter the student dashboard.
 
-## 4. Что делает владелец
+## 4. Owner Workflow
 
-Чтобы создать администратора:
+To create an admin:
 
-1. Войдите на сайт как владелец.
-2. Откройте раздел **Пользователи**.
-3. Введите имя администратора.
-4. Введите логин администратора.
-5. Используйте предложенный пароль или задайте новый.
-6. Скопируйте пароль.
-7. Создайте администратора.
-8. Передайте администратору логин и пароль безопасным способом.
+1. Sign in as the owner.
+2. Open **Users**.
+3. Enter the admin name.
+4. Enter the admin login.
+5. Use the suggested password or set a new one.
+6. Copy the password.
+7. Create the admin.
+8. Share the login and password through a safe private channel.
 
-Пароль нужно сохранить сразу. После создания его нельзя посмотреть заново, можно только заменить доступ.
+Passwords must be saved when they are created. They cannot be viewed again later; access can only be replaced.
 
-Если рядом с администратором есть кнопка удаления, владелец может удалить этого администратора. Сам владелец через список пользователей не удаляется.
+If a delete button is shown next to an admin, the owner can remove that admin. The owner account is not removed through the users list.
 
-## 5. Что делает администратор
+## 5. Admin Workflow
 
-### Создать класс
+### Create A Class
 
-1. Откройте раздел **Классы**.
-2. Введите название класса.
-3. Нажмите **Создать класс**.
+1. Open **Classes**.
+2. Enter the class name.
+3. Select **Create class**.
 
-### Открыть класс
+### Open A Class
 
-1. Откройте раздел **Классы**.
-2. Найдите нужный класс в списке.
-3. Нажмите **Открыть**.
+1. Open **Classes**.
+2. Find the class in the list.
+3. Select **Open**.
 
-### Добавить студента
+### Add A Student
 
-1. Откройте нужный класс.
-2. В блоке добавления студента введите имя студента.
-3. Введите логин студента.
-4. Используйте предложенный пароль или задайте новый.
-5. Скопируйте пароль.
-6. Нажмите **Добавить**.
-7. Передайте студенту логин и пароль безопасным способом.
+1. Open the class.
+2. Enter the student name.
+3. Enter the student login.
+4. Use the suggested password or set a new one.
+5. Copy the password.
+6. Select **Add**.
+7. Share the login and password through a safe private channel.
 
-Студенты не регистрируются сами. Их добавляет владелец или администратор.
+Students do not self-register. They are added by the owner or an admin.
 
-### Сменить пароль студенту
+### Change A Student Password
 
-Если студент забыл пароль:
+If a student forgets a password:
 
-1. Откройте нужный класс.
-2. Найдите студента в списке.
-3. Нажмите **Карточка**.
-4. В блоке пароля задайте новый пароль.
-5. Нажмите **Сменить пароль**.
-6. Передайте новый пароль студенту.
+1. Open the class.
+2. Find the student.
+3. Open the student card.
+4. Set a new password in the password section.
+5. Select **Change password**.
+6. Share the new password with the student through a safe private channel.
 
-Старый пароль посмотреть нельзя.
+The old password cannot be viewed.
 
-### Удалить студента
+### Delete A Student
 
-Если рядом со студентом есть кнопка **Удалить**, администратор может удалить студента из класса.
+If a delete button is shown next to a student, an admin can remove the student from the class.
 
-При удалении студента удаляются и его отметки посещаемости.
+Deleting a student also removes that student's attendance records.
 
-## 6. Как создать занятие
+## 6. Create A Lesson
 
-1. Откройте нужный класс.
-2. Найдите блок **Создать занятие**.
-3. Введите название занятия.
-4. Выберите дату занятия.
-5. Укажите время начала.
-6. Укажите окно отметки в минутах.
-7. Нажмите **Создать**.
+1. Open the class.
+2. Find the lesson creation form.
+3. Enter the lesson name.
+4. Select the lesson date.
+5. Set the start time.
+6. Set the check-in window in minutes.
+7. Select **Create**.
 
-**Название** - понятное имя занятия, например тема или тип урока.
+**Name** is a clear lesson name, such as a topic or session type.
 
-**Дата** - день, когда проходит занятие.
+**Date** is the day when the lesson happens.
 
-**Время начала** - время, с которого студентам можно отмечаться.
+**Start time** is when students may begin checking in.
 
-**Окно отметки** - сколько минут после начала занятия студент может отметиться. Например, если занятие начинается в 10:00, а окно отметки 15 минут, отметка принимается с 10:00 до 10:15.
+**Check-in window** is how many minutes after the start time a student may check in. For example, if a lesson starts at 10:00 and the window is 15 minutes, check-in is accepted from 10:00 to 10:15.
 
-## 7. Как открыть занятие и показать QR
+## 7. Open A Lesson And Show The QR Code
 
-1. Откройте нужный класс.
-2. В списке занятий найдите занятие.
-3. Нажмите **Открыть**.
-4. Покажите QR-код студентам на экране, проекторе или другом устройстве.
+1. Open the class.
+2. Find the lesson in the lessons list.
+3. Select **Open**.
+4. Show the QR code to students on a screen, projector, or other device.
 
-QR-код можно открыть заранее. Студенты увидят страницу, но отметка засчитается только в разрешенное время.
+The QR code can be opened before the lesson starts. Students may see the scan page early, but attendance is accepted only during the configured check-in window.
 
-## 8. Как студент отмечается
+## 8. Student Check-In
 
-1. Студент открывает сайт.
-2. Входит по своему логину и паролю.
-3. Сканирует QR-код с телефона.
-4. Видит результат отметки на экране.
+1. The student opens the app.
+2. The student signs in with their login and password.
+3. The student scans the lesson QR code.
+4. The app shows the check-in result.
 
-Если отметка принята, система сохраняет посещение. Повторно отметиться на то же занятие нельзя.
+If the check-in is accepted, the app saves the attendance record. A student cannot check in twice for the same lesson.
 
-## 9. Что означают сообщения
+## 9. Common Messages
 
-**Отметка ещё не началась**  
-Занятие еще не началось. Нужно подождать времени начала и открыть QR-код снова.
+**Check-in has not started**  
+The lesson has not started yet. Wait until the start time and open the QR code again.
 
-**Вы отмечены**  
-Посещение сохранено. Дополнительных действий не нужно.
+**You are marked present**  
+Attendance was saved. No extra action is needed.
 
-**Вы уже отмечались**  
-Посещение уже было сохранено раньше. Повторная отметка не создается.
+**You already checked in**  
+Attendance was already saved earlier. A repeated scan does not create another record.
 
-**Время отметки закончилось**  
-Разрешенное время прошло. Система больше не принимает отметку по этому занятию.
+**Check-in time is over**  
+The allowed check-in window has ended. The app no longer accepts attendance for this lesson.
 
-**Этот QR-код не для вашего класса**  
-Студент открыл QR-код занятия другого класса. Нужно попросить администратора показать QR-код для своего класса.
+**This QR code is not for your class**  
+The student opened a QR code for another class. Ask an admin to show the QR code for the correct class.
 
-## 10. Как смотреть таблицу посещаемости
+## 10. Attendance Table
 
-1. Войдите как владелец или администратор.
-2. Откройте раздел **Классы**.
-3. Откройте нужный класс.
-4. Найдите таблицу посещаемости.
+1. Sign in as an owner or admin.
+2. Open **Classes**.
+3. Open the class.
+4. Find the attendance table.
 
-В таблице:
+In the table:
 
-- строки - студенты;
-- столбцы - занятия;
-- ячейки - статус студента на занятии.
+- rows are students;
+- columns are lessons;
+- cells show the student's status for each lesson.
 
-**Присутствовал** означает, что студент отметился.
+**Present** means the student checked in.
 
-**Пропуск** означает, что занятие прошло, а отметки студента нет.
+**Absent** means the lesson has passed and there is no attendance record for the student.
 
-**Ещё не прошло** означает, что занятие еще не завершилось или время отметки еще открыто.
+**Not finished yet** means the lesson has not ended or the check-in window is still open.
 
-## 11. Как студент смотрит свои посещения и пропуски
+## 11. Student Attendance View
 
-1. Студент входит на сайт.
-2. Открывается кабинет студента.
-3. В кабинете видно количество посещений и пропусков.
-4. Ниже отображается список занятий и статус по каждому занятию.
+1. The student signs in.
+2. The student dashboard opens.
+3. The dashboard shows attendance and absence counts.
+4. The lesson list shows the status for each lesson.
 
-Будущие занятия не считаются пропуском, потому что студент еще не мог на них отметиться.
+Future lessons are not counted as absences because students cannot check in before the allowed time.
 
-## 12. Как редактировать занятие
+## 12. Edit A Lesson
 
-1. Откройте нужный класс.
-2. В списке занятий откройте занятие.
-3. В блоке редактирования измените название, дату, время начала или окно отметки.
-4. Нажмите **Сохранить**.
+1. Open the class.
+2. Open the lesson from the lesson list.
+3. Change the name, date, start time, or check-in window.
+4. Select **Save**.
 
-После редактирования QR-ссылка занятия и уже сохраненные отметки остаются на месте.
+The lesson QR link and existing attendance records remain in place after editing.
 
-## 13. Как удалить занятие
+## 13. Delete A Lesson
 
-1. Откройте страницу занятия.
-2. Нажмите **Удалить занятие**.
-3. Подтвердите удаление.
+1. Open the lesson page.
+2. Select **Delete lesson**.
+3. Confirm deletion.
 
-Вместе с занятием удаляются отметки посещаемости по этому занятию.
+Deleting a lesson also removes attendance records for that lesson.
 
-## 14. Как удалить класс
+## 14. Delete A Class
 
-1. Откройте раздел **Классы**.
-2. Найдите нужный класс.
-3. Нажмите **Удалить**.
-4. Подтвердите удаление.
+1. Open **Classes**.
+2. Find the class.
+3. Select **Delete**.
+4. Confirm deletion.
 
-Вместе с классом удаляются студенты, занятия и отметки посещаемости этого класса.
+Deleting a class also removes its students, lessons, and attendance records.
 
-## 15. Что делать, если пароль забыт
+## 15. Forgotten Passwords
 
-Если пароль забыл студент, администратор открывает карточку студента и задает новый пароль.
+If a student forgets a password, an admin opens the student card and sets a new password.
 
-Если пароль забыл администратор, владелец выдает ему новый доступ.
+If an admin forgets a password, the owner gives the admin new access.
 
-Если потерян доступ владельца, нужно обратиться к техническому специалисту.
+If owner access is lost, use the documented owner credential update workflow in `DEPLOYMENT.md`.
 
-Пароли нельзя посмотреть после создания. Их можно только заменить.
+Passwords cannot be viewed after creation. They can only be replaced.
 
-## 16. Частые вопросы
+## 16. FAQ
 
-**Можно ли создать несколько классов?**  
-Да. Откройте раздел **Классы** и создайте столько классов, сколько нужно.
+**Can I create multiple classes?**  
+Yes. Open **Classes** and create as many classes as needed.
 
-**Можно ли добавить несколько администраторов?**  
-Да. Владелец может создать нескольких администраторов в разделе **Пользователи**.
+**Can I add multiple admins?**  
+Yes. The owner can create multiple admins in **Users**.
 
-**Что делать, если студент забыл пароль?**  
-Откройте карточку студента и задайте новый пароль.
+**What should I do if a student forgets a password?**  
+Open the student card and set a new password.
 
-**Что делать, если занятие создано с ошибкой?**  
-Откройте занятие, исправьте данные и нажмите **Сохранить**. Если занятие больше не нужно, удалите его.
+**What should I do if a lesson was created with incorrect data?**  
+Open the lesson, correct the data, and select **Save**. Delete the lesson if it is no longer needed.
 
-**Почему студент видит пропуск?**  
-Пропуск появляется, если занятие уже прошло, а студент не отметился в разрешенное время.
+**Why does a student see an absence?**  
+An absence appears when a lesson has passed and the student did not check in during the allowed time.
 
-**Можно ли отметить студента повторно?**  
-Нет. Для одного занятия сохраняется только одна отметка студента.
+**Can a student check in twice?**  
+No. Only one attendance record is saved for one student and one lesson.
 
-**Можно ли открыть QR заранее?**  
-Да. QR можно показать заранее, но отметка будет принята только в указанное время.
+**Can the QR code be opened early?**  
+Yes. The QR code can be shown early, but attendance is accepted only during the configured check-in window.
 
-**Что делать, если студент открыл QR не своего класса?**  
-Показать ему QR-код занятия его класса.
+**What if a student opens a QR code for another class?**  
+Show the QR code for the student's correct class.
 
-## 17. Чеклист первого запуска
+## 17. First Run Checklist
 
-- Войти как владелец.
-- Создать администратора.
-- Передать администратору логин и пароль.
-- Создать класс.
-- Добавить студентов.
-- Передать студентам логины и пароли.
-- Создать занятие.
-- Открыть занятие и показать QR-код.
-- Проверить вход студента.
-- Проверить отметку по QR-коду.
-- Открыть таблицу посещаемости и проверить результат.
+- Sign in as the owner.
+- Create an admin.
+- Share admin credentials privately.
+- Create a class.
+- Add students.
+- Share student credentials privately.
+- Create a lesson.
+- Open the lesson and show the QR code.
+- Test student sign-in.
+- Test QR check-in.
+- Open the attendance table and review the result.

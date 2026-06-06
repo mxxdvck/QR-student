@@ -1,26 +1,32 @@
-# Размещение проекта
+# Deployment Guide
 
-## Рабочая среда
+This guide describes deployment setup for QR Student. It is public project documentation and intentionally avoids real credentials, private URLs, tokens, and secrets.
 
-Проект рассчитан на размещение в Vercel и работу с внешней PostgreSQL-базой. Базу можно взять в Supabase, Neon или другом сервисе, который выдает строку подключения через `DATABASE_URL`.
+QR Student is an early active OSS project. Review and configure it before real-world use, especially around auth, roles, QR tokens, duplicate scans, attendance records, direct API calls, and server-side checks.
 
-В рабочей среде нельзя использовать локальный демо-режим. Переменную `DEMO_DATABASE` не нужно добавлять в Vercel.
+## Deployment Environment
 
-## Переменные окружения в Vercel
+The app can be deployed on Vercel with an external PostgreSQL database. The database may come from Supabase, Neon, or another provider that gives a PostgreSQL connection string through `DATABASE_URL`.
 
-В настройках проекта Vercel добавьте переменные:
+Do not use the local demo database mode for deployment. Do not set `DEMO_DATABASE` in a deployed environment.
 
-- `NEXT_PUBLIC_APP_URL` - адрес размещенного сайта.
-- `SESSION_SECRET` - длинный случайный секрет для пользовательских сессий.
-- `DATABASE_URL` - строка подключения к PostgreSQL, обычно с `sslmode=require`.
-- `SEED_OWNER_LOGIN` - начальный логин владельца.
-- `SEED_OWNER_PASSWORD` - начальный пароль владельца.
+## Environment Variables
 
-После изменения переменных окружения нужно запустить новый деплой, чтобы приложение получило новые значения.
+Configure these values in the deployment environment:
 
-## Настройка базы данных
+- `NEXT_PUBLIC_APP_URL` - public app URL for the deployed instance.
+- `SESSION_SECRET` - long random secret for user sessions.
+- `DATABASE_URL` - PostgreSQL connection string, usually with TLS enabled.
+- `SEED_OWNER_LOGIN` - initial owner login used during seeding.
+- `SEED_OWNER_PASSWORD` - initial owner password used during seeding.
 
-Команды выполняются локально из папки проекта, когда рабочие переменные окружения уже доступны в терминале:
+After changing environment variables, start a new deployment so the app receives the updated values.
+
+Do not commit real environment values, passwords, tokens, database URLs, or deployment URLs to public docs.
+
+## Database Setup
+
+Run these commands locally from the project folder after deployment environment variables are available in the terminal:
 
 ```sh
 npm install
@@ -30,66 +36,66 @@ npm run db:seed
 npm run production:db-check
 ```
 
-Что делают команды:
+What the commands do:
 
-- `npm run production:check` проверяет, что рабочие настройки заполнены.
-- `npm run db:push` применяет структуру таблиц к PostgreSQL-базе.
-- `npm run db:seed` создает владельца, если его еще нет.
-- `npm run production:db-check` проверяет таблицы и наличие владельца.
+- `npm run production:check` verifies that deployment settings are present.
+- `npm run db:push` applies the table structure to PostgreSQL.
+- `npm run db:seed` creates the owner if the owner does not already exist.
+- `npm run production:db-check` checks the database tables and owner record.
 
-Команда создания владельца требует `SEED_OWNER_LOGIN` и `SEED_OWNER_PASSWORD`. Реальные логины и пароли нельзя коммитить или хранить в открытых документах.
+Owner creation requires `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`. Real logins and passwords must stay out of commits and public documents.
 
-## Замена доступа владельца
+## Replace Owner Access
 
-Если владелец уже создан и нужно изменить логин или пароль, задайте новые значения `SEED_OWNER_LOGIN` и `SEED_OWNER_PASSWORD`, затем выполните:
+If the owner already exists and the login or password must be changed, set new `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD` values in the environment, then run:
 
 ```sh
 npm run owner:update-credentials
 ```
 
-Если в базе больше одного владельца, дополнительно укажите `OWNER_CURRENT_LOGIN`, чтобы обновить нужную учетную запись.
+If the database has more than one owner, also set `OWNER_CURRENT_LOGIN` so the command updates the correct account.
 
-Команда только обновляет доступ. Она не создает нового владельца и не выводит пароль на экран.
+The command updates access only. It does not create a new owner and does not print the password.
 
-## Проверка перед размещением
+## Checks Before Deployment
 
-Перед рабочим запуском выполните:
+Before deploying or reviewing deployment readiness, run:
 
 ```sh
 npm run production:check
 npm run lint
-npm run test
+npm test
 npm run build
 ```
 
-После размещения проверьте основной сценарий на рабочем адресе:
+After deployment, manually verify the main workflow on the deployed app:
 
-1. Вход владельца.
-2. Создание администратора.
-3. Создание класса.
-4. Добавление студента.
-5. Создание занятия.
-6. Открытие QR-кода.
-7. Отметка студента.
-8. Защита от повторной отметки.
-9. Таблица посещаемости.
-10. Кабинет студента.
-11. Редактирование и удаление занятия.
-12. Выход и повторный вход.
+1. Owner sign-in.
+2. Admin creation.
+3. Class creation.
+4. Student creation.
+5. Lesson creation.
+6. QR code display.
+7. Student check-in.
+8. Duplicate check-in protection.
+9. Attendance table.
+10. Student dashboard.
+11. Lesson edit and delete.
+12. Sign-out and sign-in.
 
-## Локальная проверка
+## Local Verification
 
-Для локальной проверки можно использовать `.env.local` с тестовыми значениями:
+For local verification, use `.env.local` with local-only placeholder values. Do not copy real deployment secrets into examples or public docs.
 
-```sh
-DEMO_DATABASE=1
-SESSION_SECRET=local-demo-session-secret-change-before-production
-NEXT_PUBLIC_APP_URL=http://127.0.0.1:3000
-SEED_OWNER_LOGIN=admin
-SEED_OWNER_PASSWORD=admin123
-```
+Required local values:
 
-Затем выполните:
+- `DEMO_DATABASE`
+- `SESSION_SECRET`
+- `NEXT_PUBLIC_APP_URL`
+- `SEED_OWNER_LOGIN`
+- `SEED_OWNER_PASSWORD`
+
+Then run:
 
 ```sh
 npm run demo:db
