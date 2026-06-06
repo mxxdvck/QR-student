@@ -85,4 +85,3 @@ Do not publish suspected vulnerabilities publicly before the maintainer has had 
 - `HANDOVER.md` - project handover notes.
 - `ROADMAP.md` - short OSS roadmap.
 - `docs/MAINTAINER_WORKFLOW.md` - maintainer workflow.
-- `docs/CODEX_OSS_APPLICATION_NOTES.md` - notes for a Codex for OSS application.
