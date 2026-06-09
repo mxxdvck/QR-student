@@ -15,6 +15,7 @@ Do not use the local demo database mode for deployment. Do not set `DEMO_DATABAS
 Configure these values in the deployment environment:
 
 - `NEXT_PUBLIC_APP_URL` - public app URL for the deployed instance.
+- `PROJECT_TIME_ZONE` - project lesson timezone. For the current MSK+4 client, use `Asia/Krasnoyarsk`.
 - `SESSION_SECRET` - long random secret for user sessions.
 - `DATABASE_URL` - PostgreSQL connection string, usually with TLS enabled.
 - `SEED_OWNER_LOGIN` - initial owner login used during seeding.
@@ -44,6 +45,22 @@ What the commands do:
 - `npm run production:db-check` checks the database tables and owner record.
 
 Owner creation requires `SEED_OWNER_LOGIN` and `SEED_OWNER_PASSWORD`. Real logins and passwords must stay out of commits and public documents.
+
+## Lesson Timezone
+
+The project lesson timezone is `Asia/Krasnoyarsk`. Set this in deployment:
+
+```sh
+PROJECT_TIME_ZONE=Asia/Krasnoyarsk
+```
+
+Existing lessons that were entered as Moscow time must be shifted once by +4 hours:
+
+```sh
+npm run lessons:shift-msk4
+```
+
+The command is a dry run by default. To apply the shift to PostgreSQL, set `APPLY_LESSON_TIME_SHIFT=1` for one run.
 
 ## Replace Owner Access
 
@@ -92,6 +109,7 @@ Required local values:
 - `DEMO_DATABASE`
 - `SESSION_SECRET`
 - `NEXT_PUBLIC_APP_URL`
+- `PROJECT_TIME_ZONE`
 - `SEED_OWNER_LOGIN`
 - `SEED_OWNER_PASSWORD`
 

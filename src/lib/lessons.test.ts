@@ -67,24 +67,24 @@ describe("lesson helpers", () => {
       checkInMinutes: 15,
     };
 
-    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:29:00.000Z"))).toBe(
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T02:29:00.000Z"))).toBe(
       "not-started",
     );
-    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:30:00.000Z"))).toBe(
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T02:30:00.000Z"))).toBe(
       "open",
     );
-    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:35:00.000Z"))).toBe(
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T02:35:00.000Z"))).toBe(
       "open",
     );
-    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:45:00.000Z"))).toBe(
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T02:45:00.000Z"))).toBe(
       "open",
     );
-    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T06:46:00.000Z"))).toBe(
+    expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T02:46:00.000Z"))).toBe(
       "closed",
     );
   });
 
-  it("uses Europe/Moscow project time instead of the server default timezone", () => {
+  it("uses Asia/Krasnoyarsk project time instead of the server default timezone", () => {
     const originalTimezone = process.env.TZ;
     process.env.TZ = "UTC";
 
@@ -95,19 +95,19 @@ describe("lesson helpers", () => {
         checkInMinutes: 15,
       };
 
-      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T11:59:59.999Z"))).toBe(
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T07:59:59.999Z"))).toBe(
         "not-started",
       );
-      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:00:00.000Z"))).toBe(
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T08:00:00.000Z"))).toBe(
         "open",
       );
-      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:10:00.000Z"))).toBe(
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T08:10:00.000Z"))).toBe(
         "open",
       );
-      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:15:00.000Z"))).toBe(
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T08:15:00.000Z"))).toBe(
         "open",
       );
-      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T12:15:00.001Z"))).toBe(
+      expect(getLessonCheckInStatus(lesson, new Date("2026-06-02T08:15:00.001Z"))).toBe(
         "closed",
       );
     } finally {
@@ -127,13 +127,13 @@ describe("lesson helpers", () => {
     };
 
     expect(
-      getAttendanceCellStatus(lesson, true, new Date("2026-06-02T06:35:00.000Z")),
+      getAttendanceCellStatus(lesson, true, new Date("2026-06-02T02:35:00.000Z")),
     ).toBe("present");
     expect(
-      getAttendanceCellStatus(lesson, false, new Date("2026-06-02T06:45:00.000Z")),
+      getAttendanceCellStatus(lesson, false, new Date("2026-06-02T02:45:00.000Z")),
     ).toBe("pending");
     expect(
-      getAttendanceCellStatus(lesson, false, new Date("2026-06-02T06:46:00.000Z")),
+      getAttendanceCellStatus(lesson, false, new Date("2026-06-02T02:46:00.000Z")),
     ).toBe("absent");
   });
 

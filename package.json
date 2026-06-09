@@ -15,7 +15,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "owner:update-credentials": "tsx scripts/update-owner-credentials.ts",
     "production:db-check": "tsx scripts/verify-production-db.ts",
-    "demo:db": "tsx --env-file=.env.local scripts/setup-local-demo.ts"
+    "demo:db": "tsx --env-file=.env.local scripts/setup-local-demo.ts",
+    "lessons:shift-msk4": "tsx scripts/shift-lesson-times.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2",

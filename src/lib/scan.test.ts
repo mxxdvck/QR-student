@@ -24,7 +24,7 @@ describe("scan result resolver", () => {
           lesson: moscowLesson,
           studentClassId: "class-1",
           hasAttendance: false,
-          now: new Date("2026-06-02T11:59:59.999Z"),
+          now: new Date("2026-06-02T07:59:59.999Z"),
         }),
       ).toBe("not-started");
       expect(
@@ -32,7 +32,7 @@ describe("scan result resolver", () => {
           lesson: moscowLesson,
           studentClassId: "class-1",
           hasAttendance: false,
-          now: new Date("2026-06-02T12:00:00.000Z"),
+          now: new Date("2026-06-02T08:00:00.000Z"),
         }),
       ).toBe("ready");
       expect(
@@ -40,7 +40,7 @@ describe("scan result resolver", () => {
           lesson: moscowLesson,
           studentClassId: "class-1",
           hasAttendance: false,
-          now: new Date("2026-06-02T12:15:00.001Z"),
+          now: new Date("2026-06-02T08:15:00.001Z"),
         }),
       ).toBe("closed");
     } finally {
@@ -58,7 +58,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date("2026-06-02T06:29:00.000Z"),
+        now: new Date("2026-06-02T02:29:00.000Z"),
       }),
     ).toBe("not-started");
   });
@@ -69,7 +69,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date("2026-06-02T06:30:00.000Z"),
+        now: new Date("2026-06-02T02:30:00.000Z"),
       }),
     ).toBe("ready");
   });
@@ -80,7 +80,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date("2026-06-02T06:35:00.000Z"),
+        now: new Date("2026-06-02T02:35:00.000Z"),
       }),
     ).toBe("ready");
   });
@@ -91,7 +91,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-2",
         hasAttendance: false,
-        now: new Date("2026-06-02T06:35:00.000Z"),
+        now: new Date("2026-06-02T02:35:00.000Z"),
       }),
     ).toBe("wrong-class");
   });
@@ -102,7 +102,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date("2026-06-02T06:45:00.000Z"),
+        now: new Date("2026-06-02T02:45:00.000Z"),
       }),
     ).toBe("ready");
   });
@@ -113,7 +113,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: false,
-        now: new Date("2026-06-02T06:46:00.000Z"),
+        now: new Date("2026-06-02T02:46:00.000Z"),
       }),
     ).toBe("closed");
   });
@@ -124,7 +124,7 @@ describe("scan result resolver", () => {
         lesson,
         studentClassId: "class-1",
         hasAttendance: true,
-        now: new Date("2026-06-02T06:35:00.000Z"),
+        now: new Date("2026-06-02T02:35:00.000Z"),
       }),
     ).toBe("already-marked");
   });

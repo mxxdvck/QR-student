@@ -1,4 +1,8 @@
-export const projectTimeZone = "Europe/Moscow";
+export const projectTimeZone = "Asia/Krasnoyarsk";
+
+export function getProjectTimeZone(): string {
+  return process.env.PROJECT_TIME_ZONE?.trim() || projectTimeZone;
+}
 
 type ProjectDateTimeParts = {
   year: number;
@@ -11,7 +15,7 @@ type ProjectDateTimeParts = {
 export function parseProjectDateTime(
   date: string,
   time: string,
-  timeZone = projectTimeZone,
+  timeZone = getProjectTimeZone(),
 ): Date {
   const parts = parseDateTimeParts(date, time);
   const utcGuess = Date.UTC(
